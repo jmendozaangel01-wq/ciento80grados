@@ -57,6 +57,7 @@ a, button { cursor: pointer; }
 
 /* ── Layout ───────────────────────────────────────────────── */
 .container {
+  width: 100%;
   max-width: var(--container);
   margin: 0 auto;
   padding: 0 36px;
@@ -1025,9 +1026,10 @@ section { padding: var(--pad-section) 0; }
   .nav-links { display: none; }
 
   /* Hero */
-  .hero-inner { margin-left: 0; }
+  .hero-inner { margin-left: 0; width: 100%; }
   .hero-headline { font-size: clamp(2.2rem, 8vw, 3rem); }
   .hero-br { display: block; }
+  .hero-sub { max-width: 100%; }
   .hero-actions { flex-wrap: wrap; }
   .hero-metrics { gap: 28px; }
 

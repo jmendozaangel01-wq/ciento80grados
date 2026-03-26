@@ -59,7 +59,7 @@ export default function About() {
               desde otro ángulo.
             </p>
             <p className="about-bio reveal">
-              Me especializo en tres cosas: construir sitios y plataformas web que funcionales y que convierten,
+              Me especializo en tres cosas: construir sitios y plataformas web funcionales y que convierten,
               automatizar procesos con n8n para que los negocios escalen sin contratar más personal,
               administro, edito, monto y optimizo tiendas Shopify que venden de verdad.
             </p>
