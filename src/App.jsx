@@ -3,6 +3,7 @@ import Hero from './components/Hero'
 import About from './components/About'
 import Services from './components/Services'
 import Portfolio from './components/Portfolio'
+import YouTube from './components/YouTube'
 import NewsFeed from './components/NewsFeed'
 import Contact from './components/Contact'
 
@@ -13,6 +14,7 @@ export default function App() {
       <main>
         <Hero />
         <About />
+        <YouTube />
         <Services />
         <Portfolio />
         <NewsFeed />
