@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-const CATEGORIES = ['Tech', 'IA', 'Política', 'Todos']
+const CATEGORIES = ['Tech', 'IA', 'Política', 'Deporte', 'Todos']
 const WEBHOOK = 'https://n8n.srv1469845.hstgr.cloud/webhook/noticias'
 
 export default function NewsFeed() {
