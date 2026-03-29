@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import About from './components/About'
@@ -8,6 +9,22 @@ import NewsFeed from './components/NewsFeed'
 import Contact from './components/Contact'
 
 export default function App() {
+  useEffect(() => {
+    const saved = localStorage.getItem('scroll_y')
+    if (saved) window.scrollTo(0, parseInt(saved, 10))
+
+    let timer
+    const onScroll = () => {
+      clearTimeout(timer)
+      timer = setTimeout(() => {
+        localStorage.setItem('scroll_y', window.scrollY)
+      }, 300)
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
   return (
     <>
       <Navbar />
