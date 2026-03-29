@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-const CATEGORIES = ['Todos', 'Tech', 'IA']
+const CATEGORIES = ['Tech', 'IA', 'Política', 'Todos']
 const WEBHOOK = 'https://n8n.srv1469845.hstgr.cloud/webhook/noticias'
 
 export default function NewsFeed() {
@@ -71,7 +71,7 @@ export default function NewsFeed() {
                 <span className="news-time">{item.time}</span>
               </div>
               <h4 className="news-title">{item.title}</h4>
-              <div className="news-source">{item.source}</div>
+              <div className="news-source">Leer más</div>
             </a>
           ))}
         </div>
