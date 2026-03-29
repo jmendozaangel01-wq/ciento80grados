@@ -78,7 +78,7 @@ export default function NewsFeed() {
 
         {totalPages > 1 && (
           <div className="news-pagination">
-            {Array.from({ length: totalPages }, (_, i) => (
+            {Array.from({ length: Math.min(3, totalPages) }, (_, i) => (
               <button
                 key={i}
                 className={`news-page-dot${page === i ? ' active' : ''}`}
@@ -87,6 +87,20 @@ export default function NewsFeed() {
                 {i + 1}
               </button>
             ))}
+            {totalPages > 3 && (
+              <>
+                <button
+                  className="news-page-dot"
+                  onClick={() => setPage(p => Math.min(p + 1, totalPages - 1))}
+                  disabled={page === totalPages - 1}
+                >›</button>
+                <button
+                  className="news-page-dot"
+                  onClick={() => setPage(totalPages - 1)}
+                  disabled={page === totalPages - 1}
+                >»</button>
+              </>
+            )}
           </div>
         )}
 

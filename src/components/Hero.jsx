@@ -11,7 +11,7 @@ function scramble(text) {
 const SCRAMBLE_PLAYED_KEY = 'hero_scramble_played'
 
 function useScramble(text, delay = 250) {
-  const alreadyPlayed = sessionStorage.getItem(SCRAMBLE_PLAYED_KEY) === 'true'
+  const alreadyPlayed = localStorage.getItem(SCRAMBLE_PLAYED_KEY) === 'true'
   const [display, setDisplay] = useState(() => alreadyPlayed ? text : scramble(text))
 
   useEffect(() => {
@@ -33,7 +33,7 @@ function useScramble(text, delay = 250) {
         if (frame < total) requestAnimationFrame(tick)
         else {
           setDisplay(text)
-          sessionStorage.setItem(SCRAMBLE_PLAYED_KEY, 'true')
+          localStorage.setItem(SCRAMBLE_PLAYED_KEY, 'true')
         }
       }
 

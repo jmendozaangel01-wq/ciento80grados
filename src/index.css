@@ -905,6 +905,7 @@ section { padding: var(--pad-section) 0; }
 .news-status { color: var(--muted); font-size: 0.85rem; margin: 24px 0; }
 .news-pagination {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 8px;
   margin-top: 32px;
