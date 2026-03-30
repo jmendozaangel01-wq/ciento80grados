@@ -31,10 +31,10 @@ export default function App() {
       <main>
         <Hero />
         <About />
-        <YouTube />
         <Services />
         <Portfolio />
         <NewsFeed />
+        <YouTube />
         <Contact />
       </main>
       <footer className="footer">

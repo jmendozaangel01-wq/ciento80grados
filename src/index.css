@@ -887,6 +887,7 @@ section { padding: var(--pad-section) 0; }
 .news-cat.ia       { color: var(--green); }
 .news-cat.shopify  { color: #9B8AFF; }
 .news-cat.politica { color: #FF6B6B; }
+.news-cat.finanzas { color: #F5A623; }
 
 .news-time {
   font-family: var(--font-mono);
@@ -917,9 +918,13 @@ section { padding: var(--pad-section) 0; }
   border: 1px solid var(--border);
   background: transparent;
   color: var(--muted);
-  font-size: 0.72rem;
+  font-size: 0.85rem;
   cursor: pointer;
   transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
 }
 .news-page-dot:hover { border-color: var(--green); color: var(--green); }
 .news-page-dot.active { background: var(--green); border-color: var(--green); color: #000; }
