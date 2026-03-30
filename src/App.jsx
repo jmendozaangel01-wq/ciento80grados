@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import About from './components/About'
@@ -7,8 +8,9 @@ import Portfolio from './components/Portfolio'
 import YouTube from './components/YouTube'
 import NewsFeed from './components/NewsFeed'
 import Contact from './components/Contact'
+import InstagramPage from './pages/InstagramPage'
 
-export default function App() {
+function Home() {
   useEffect(() => {
     const saved = localStorage.getItem('scroll_y')
     if (saved) window.scrollTo(0, parseInt(saved, 10))
@@ -27,7 +29,6 @@ export default function App() {
 
   return (
     <>
-      <Navbar />
       <main>
         <Hero />
         <About />
@@ -52,6 +53,18 @@ export default function App() {
           </div>
         </div>
       </footer>
+    </>
+  )
+}
+
+export default function App() {
+  return (
+    <>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/instagram" element={<InstagramPage />} />
+      </Routes>
     </>
   )
 }
