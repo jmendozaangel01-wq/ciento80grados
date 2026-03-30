@@ -11,10 +11,28 @@ export default function NewsFeed() {
   const [page, setPage]       = useState(0)
   const PER_PAGE = 3
 
+  const CACHE_KEY = 'news_cache'
+  const CACHE_TTL = 30 * 60 * 1000 // 30 minutos
+
   useEffect(() => {
+    const cached = localStorage.getItem(CACHE_KEY)
+    if (cached) {
+      const { data, ts } = JSON.parse(cached)
+      if (Date.now() - ts < CACHE_TTL) {
+        setNews(data)
+        setLoading(false)
+        return
+      }
+    }
+
     fetch(WEBHOOK)
       .then(r => { if (!r.ok) throw new Error(); return r.json() })
-      .then(data => { setNews(Array.isArray(data) ? data : []); setLoading(false) })
+      .then(data => {
+        const arr = Array.isArray(data) ? data : []
+        localStorage.setItem(CACHE_KEY, JSON.stringify({ data: arr, ts: Date.now() }))
+        setNews(arr)
+        setLoading(false)
+      })
       .catch(() => { setError(true); setLoading(false) })
   }, [])
 
