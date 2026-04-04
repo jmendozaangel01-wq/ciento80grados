@@ -58,6 +58,14 @@ export default function Navbar() {
                   Instagram
                 </Link>
               </li>
+              <li>
+                <Link
+                  to="/renovar-ai"
+                  style={location.pathname === '/renovar-ai' ? { color: 'var(--green)' } : {}}
+                >
+                  Renovar AI
+                </Link>
+              </li>
             </ul>
 
             <a
@@ -102,6 +110,15 @@ export default function Navbar() {
               onClick={handleAnchorClick}
             >
               Instagram
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/renovar-ai"
+              className="mobile-menu-highlight"
+              onClick={handleAnchorClick}
+            >
+              Renovar AI
             </Link>
           </li>
         </ul>

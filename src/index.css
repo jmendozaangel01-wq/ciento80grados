@@ -1281,3 +1281,8 @@ section { padding: var(--pad-section) 0; }
   overflow: hidden;
 }
 .yt-thumb:hover .yt-thumb-title { color: var(--text); }
+
+/* ── Renovar AI ───────────────────────────────────────────── */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

@@ -9,6 +9,7 @@ import YouTube from './components/YouTube'
 import NewsFeed from './components/NewsFeed'
 import Contact from './components/Contact'
 import InstagramPage from './pages/InstagramPage'
+import RenovarAI from './pages/RenovarAI'
 
 function Home() {
   useEffect(() => {
@@ -64,6 +65,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/instagram" element={<InstagramPage />} />
+        <Route path="/renovar-ai" element={<RenovarAI />} />
       </Routes>
     </>
   )
