@@ -108,6 +108,22 @@ const s = {
     outline: 'none',
     transition: 'border-color 0.2s, box-shadow 0.2s',
   },
+  textarea: {
+    width: '100%',
+    padding: '14px 16px',
+    background: 'var(--bg-card-alt)',
+    border: '1px solid var(--border)',
+    borderRadius: '8px',
+    color: 'var(--text)',
+    fontFamily: 'var(--font-body)',
+    fontSize: '15px',
+    outline: 'none',
+    resize: 'vertical',
+    minHeight: '90px',
+    lineHeight: 1.6,
+    transition: 'border-color 0.2s, box-shadow 0.2s',
+    boxSizing: 'border-box',
+  },
   photosGrid: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
@@ -148,6 +164,73 @@ const s = {
     gap: '10px',
     transition: 'opacity 0.2s, transform 0.1s',
   },
+}
+
+// ── Mode Selector ──────────────────────────────────────────────────────────
+
+function ModeSelector({ mode, onChange }) {
+  const options = [
+    { id: 'video',  emoji: '🎬', label: 'Video de transformación', hint: 'necesita 2 fotos' },
+    { id: 'render', emoji: '🖼️', label: 'Render con IA',           hint: 'necesita 1 foto'  },
+  ]
+
+  return (
+    <div style={{ marginBottom: '36px' }}>
+      <span style={s.fieldLabel}>¿Qué quieres generar?</span>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+        {options.map(opt => {
+          const selected = mode === opt.id
+          return (
+            <button
+              key={opt.id}
+              type="button"
+              onClick={() => onChange(opt.id)}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-start',
+                gap: '6px',
+                padding: '20px',
+                background: selected ? 'rgba(0,230,118,0.08)' : 'var(--bg-card-alt)',
+                border: `1.5px solid ${selected ? 'var(--green)' : 'var(--border)'}`,
+                borderRadius: '10px',
+                cursor: 'pointer',
+                transition: 'border-color 0.15s, background 0.15s',
+                textAlign: 'left',
+                boxShadow: selected ? '0 0 0 3px rgba(0,230,118,0.12)' : 'none',
+              }}
+              onMouseEnter={e => {
+                if (!selected) e.currentTarget.style.borderColor = '#333'
+              }}
+              onMouseLeave={e => {
+                if (!selected) e.currentTarget.style.borderColor = 'var(--border)'
+              }}
+            >
+              <span style={{ fontSize: '22px', lineHeight: 1 }}>{opt.emoji}</span>
+              <span style={{
+                fontFamily: 'var(--font-body)',
+                fontSize: '14px',
+                fontWeight: 600,
+                color: selected ? 'var(--text)' : 'var(--muted)',
+                lineHeight: 1.3,
+              }}>
+                {opt.label}
+              </span>
+              <span style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '10px',
+                letterSpacing: '0.1em',
+                color: selected ? 'var(--green)' : 'var(--muted)',
+                opacity: selected ? 1 : 0.6,
+              }}>
+                {opt.hint}
+              </span>
+            </button>
+          )
+        })}
+      </div>
+    </div>
+  )
 }
 
 // ── DropZone ───────────────────────────────────────────────────────────────
@@ -319,7 +402,8 @@ function SelectorCard({ label, icon, selected, onClick }) {
 
 // ── Success Screen ─────────────────────────────────────────────────────────
 
-function SuccessScreen({ email, onReset }) {
+function SuccessScreen({ email, mode, onReset }) {
+  const isRender = mode === 'render'
   return (
     <div style={{
       minHeight: '100vh',
@@ -361,8 +445,11 @@ function SuccessScreen({ email, onReset }) {
           marginBottom: '12px',
           lineHeight: 1.2,
         }}>
-          ¡Tu video está<br />
-          <span style={{ color: 'var(--green)' }}>en camino!</span>
+          {isRender ? (
+            <>¡Tu render está<br /><span style={{ color: 'var(--green)' }}>en camino!</span></>
+          ) : (
+            <>¡Tu video está<br /><span style={{ color: 'var(--green)' }}>en camino!</span></>
+          )}
         </h2>
         <p style={{
           fontSize: '15px',
@@ -371,7 +458,10 @@ function SuccessScreen({ email, onReset }) {
           maxWidth: '320px',
           margin: '0 auto 28px',
         }}>
-          Nuestra IA está procesando tu espacio. Recibirás el video de transformación en tu correo en unos minutos.
+          {isRender
+            ? 'Nuestra IA está generando el render de tu espacio. Recibirás la imagen de transformación en tu correo en unos minutos.'
+            : 'Nuestra IA está procesando tu espacio. Recibirás el video de transformación en tu correo en unos minutos.'
+          }
         </p>
         <div style={{
           display: 'inline-flex',
@@ -427,29 +517,42 @@ function SuccessScreen({ email, onReset }) {
 // ── Main Page ──────────────────────────────────────────────────────────────
 
 export default function RenovarAI() {
-  const [email, setEmail]                   = useState('')
-  const [fotoAntes, setFotoAntes]           = useState(null)
-  const [fotoDespues, setFotoDespues]       = useState(null)
-  const [previewAntes, setPreviewAntes]     = useState('')
-  const [previewDespues, setPreviewDespues] = useState('')
-  const [espacio, setEspacio]               = useState('')
-  const [estilo, setEstilo]                 = useState('')
-  const [loading, setLoading]               = useState(false)
-  const [success, setSuccess]               = useState(false)
-  const [error, setError]                   = useState('')
-  const [dragOver, setDragOver]             = useState(null)
+  const [mode, setMode]                       = useState('video')
 
-  const refAntes   = useRef(null)
-  const refDespues = useRef(null)
+  // Video form state
+  const [email, setEmail]                     = useState('')
+  const [fotoAntes, setFotoAntes]             = useState(null)
+  const [fotoDespues, setFotoDespues]         = useState(null)
+  const [previewAntes, setPreviewAntes]       = useState('')
+  const [previewDespues, setPreviewDespues]   = useState('')
+  const [espacio, setEspacio]                 = useState('')
+  const [estilo, setEstilo]                   = useState('')
+
+  // Render form state
+  const [renderEmail, setRenderEmail]         = useState('')
+  const [fotoRender, setFotoRender]           = useState(null)
+  const [previewRender, setPreviewRender]     = useState('')
+  const [renderEspacio, setRenderEspacio]     = useState('')
+  const [preferencias, setPreferencias]       = useState('')
+
+  // Shared
+  const [loading, setLoading]                 = useState(false)
+  const [success, setSuccess]                 = useState(false)
+  const [error, setError]                     = useState('')
+  const [dragOver, setDragOver]               = useState(null)
+
+  const refAntes    = useRef(null)
+  const refDespues  = useRef(null)
+  const refRender   = useRef(null)
 
   const handleFile = (file, type) => {
     const url = URL.createObjectURL(file)
     if (type === 'antes') {
-      setFotoAntes(file)
-      setPreviewAntes(url)
+      setFotoAntes(file); setPreviewAntes(url)
+    } else if (type === 'despues') {
+      setFotoDespues(file); setPreviewDespues(url)
     } else {
-      setFotoDespues(file)
-      setPreviewDespues(url)
+      setFotoRender(file); setPreviewRender(url)
     }
   }
 
@@ -476,7 +579,7 @@ export default function RenovarAI() {
     return data.publicUrl
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmitVideo = async (e) => {
     e.preventDefault()
     if (!email || !fotoAntes || !fotoDespues || !espacio || !estilo) {
       setError('Por favor completa todos los campos antes de continuar.')
@@ -509,20 +612,48 @@ export default function RenovarAI() {
     }
   }
 
-  const handleReset = () => {
-    setEmail('')
-    setFotoAntes(null)
-    setFotoDespues(null)
-    setPreviewAntes('')
-    setPreviewDespues('')
-    setEspacio('')
-    setEstilo('')
+  const handleSubmitRender = async (e) => {
+    e.preventDefault()
+    if (!renderEmail || !fotoRender || !renderEspacio) {
+      setError('Por favor completa todos los campos antes de continuar.')
+      return
+    }
     setError('')
-    setSuccess(false)
+    setLoading(true)
+    try {
+      const fotoAntesUrl = await uploadPhoto(fotoRender, 'render')
+      await fetch('https://n8n.srv1469845.hstgr.cloud/webhook/renovar-ai-render', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email:          renderEmail,
+          foto_antes_url: fotoAntesUrl,
+          espacio:        renderEspacio,
+          preferencias,
+        }),
+      })
+      setSuccess(true)
+    } catch (err) {
+      console.error(err)
+      setError('Ocurrió un error al procesar tu solicitud. Por favor intenta de nuevo.')
+    } finally {
+      setLoading(false)
+    }
   }
 
+  const handleReset = () => {
+    setEmail(''); setFotoAntes(null); setFotoDespues(null)
+    setPreviewAntes(''); setPreviewDespues('')
+    setEspacio(''); setEstilo('')
+    setRenderEmail(''); setFotoRender(null); setPreviewRender('')
+    setRenderEspacio(''); setPreferencias('')
+    setError(''); setSuccess(false)
+  }
+
+  const activeEmail = mode === 'video' ? email : renderEmail
+
   if (success) {
-    return <SuccessScreen email={email} onReset={handleReset} />
+    return <SuccessScreen email={activeEmail} mode={mode} onReset={handleReset} />
   }
 
   return (
@@ -547,35 +678,264 @@ export default function RenovarAI() {
             <span style={{ color: 'var(--green)' }}>AI</span>
           </h1>
           <p style={s.subtitle}>
-            Sube dos fotos de tu espacio, elige el estilo y nuestra IA generará un video
-            de transformación en minutos.
+            Elige lo que quieres generar: un video de transformación o un render realista de tu espacio con IA.
           </p>
         </div>
 
         {/* Form */}
         <div style={s.formCard}>
-          <form onSubmit={handleSubmit} noValidate>
 
-            {/* Email */}
-            <div style={s.fieldSection}>
-              <label style={s.fieldLabel} htmlFor="email">
-                Correo electrónico
-              </label>
-              <div style={s.inputWrapper}>
-                <span style={s.inputIcon}>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="2" y="4" width="20" height="16" rx="2" />
-                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-                  </svg>
+          {/* ── Mode selector ── */}
+          <ModeSelector mode={mode} onChange={(m) => { setMode(m); setError('') }} />
+
+          <hr style={s.divider} />
+
+          {/* ── Video form ── */}
+          {mode === 'video' && (
+            <form onSubmit={handleSubmitVideo} noValidate>
+
+              {/* Email */}
+              <div style={s.fieldSection}>
+                <label style={s.fieldLabel} htmlFor="email">
+                  Correo electrónico
+                </label>
+                <div style={s.inputWrapper}>
+                  <span style={s.inputIcon}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="2" y="4" width="20" height="16" rx="2" />
+                      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                    </svg>
+                  </span>
+                  <input
+                    id="email"
+                    type="email"
+                    placeholder="tu@email.com"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    autoComplete="email"
+                    style={s.input}
+                    onFocus={e => {
+                      e.target.style.borderColor = 'var(--green)'
+                      e.target.style.boxShadow   = '0 0 0 3px rgba(0,230,118,0.1)'
+                    }}
+                    onBlur={e => {
+                      e.target.style.borderColor = 'var(--border)'
+                      e.target.style.boxShadow   = 'none'
+                    }}
+                  />
+                </div>
+              </div>
+
+              <hr style={s.divider} />
+
+              {/* Photos */}
+              <div style={s.fieldSection}>
+                <span style={s.fieldLabel}>
+                  Fotos del espacio
+                  <span style={{ fontFamily: 'var(--font-body)', letterSpacing: 0, textTransform: 'none', fontSize: '12px', marginLeft: '8px', opacity: 0.6 }}>
+                    — antes y referencia
+                  </span>
                 </span>
-                <input
-                  id="email"
-                  type="email"
-                  placeholder="tu@email.com"
-                  value={email}
-                  onChange={e => setEmail(e.target.value)}
-                  autoComplete="email"
-                  style={s.input}
+                <div style={s.photosGrid}>
+                  <DropZone
+                    tag="Foto Antes"
+                    preview={previewAntes}
+                    isDragOver={dragOver === 'antes'}
+                    inputRef={refAntes}
+                    onDrop={e => handleDrop(e, 'antes')}
+                    onDragOver={e => handleDragOver(e, 'antes')}
+                    onDragLeave={() => setDragOver(null)}
+                    onClick={() => refAntes.current?.click()}
+                    onChange={e => e.target.files?.[0] && handleFile(e.target.files[0], 'antes')}
+                  />
+                  <DropZone
+                    tag="Foto Después"
+                    preview={previewDespues}
+                    isDragOver={dragOver === 'despues'}
+                    inputRef={refDespues}
+                    onDrop={e => handleDrop(e, 'despues')}
+                    onDragOver={e => handleDragOver(e, 'despues')}
+                    onDragLeave={() => setDragOver(null)}
+                    onClick={() => refDespues.current?.click()}
+                    onChange={e => e.target.files?.[0] && handleFile(e.target.files[0], 'despues')}
+                  />
+                </div>
+              </div>
+
+              <hr style={s.divider} />
+
+              {/* Espacio */}
+              <div style={s.fieldSection}>
+                <span style={s.fieldLabel}>Tipo de espacio</span>
+                <div style={s.selectorGrid}>
+                  {ESPACIOS.map(item => (
+                    <SelectorCard
+                      key={item.id}
+                      label={item.label}
+                      icon={item.icon}
+                      selected={espacio === item.label}
+                      onClick={() => setEspacio(item.label)}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              <hr style={s.divider} />
+
+              {/* Estilo */}
+              <div style={s.fieldSection}>
+                <span style={s.fieldLabel}>Estilo de diseño</span>
+                <div style={s.selectorGrid}>
+                  {ESTILOS.map(item => (
+                    <SelectorCard
+                      key={item.id}
+                      label={item.label}
+                      selected={estilo === item.label}
+                      onClick={() => setEstilo(item.label)}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {/* Error */}
+              {error && (
+                <div style={s.errorMsg}>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="12" y1="8" x2="12" y2="12" />
+                    <line x1="12" y1="16" x2="12.01" y2="16" />
+                  </svg>
+                  {error}
+                </div>
+              )}
+
+              {/* Submit */}
+              <button
+                type="submit"
+                disabled={loading}
+                style={{
+                  ...s.submitBtn,
+                  opacity: loading ? 0.7 : 1,
+                  cursor: loading ? 'not-allowed' : 'pointer',
+                }}
+                onMouseEnter={e => { if (!loading) e.currentTarget.style.opacity = '0.88' }}
+                onMouseLeave={e => { if (!loading) e.currentTarget.style.opacity = '1' }}
+              >
+                {loading ? (
+                  <>
+                    <span style={{
+                      width: '18px', height: '18px',
+                      border: '2px solid rgba(10,10,10,0.3)',
+                      borderTopColor: '#0a0a0a',
+                      borderRadius: '50%',
+                      animation: 'spin 0.7s linear infinite',
+                      flexShrink: 0,
+                    }} />
+                    Procesando…
+                  </>
+                ) : (
+                  <>
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                      <polygon points="23 7 16 12 23 17 23 7" />
+                      <rect x="1" y="5" width="15" height="14" rx="2" />
+                    </svg>
+                    Generar mi video
+                  </>
+                )}
+              </button>
+            </form>
+          )}
+
+          {/* ── Render form ── */}
+          {mode === 'render' && (
+            <form onSubmit={handleSubmitRender} noValidate>
+
+              {/* Email */}
+              <div style={s.fieldSection}>
+                <label style={s.fieldLabel} htmlFor="render-email">
+                  Correo electrónico
+                </label>
+                <div style={s.inputWrapper}>
+                  <span style={s.inputIcon}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="2" y="4" width="20" height="16" rx="2" />
+                      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                    </svg>
+                  </span>
+                  <input
+                    id="render-email"
+                    type="email"
+                    placeholder="tu@email.com"
+                    value={renderEmail}
+                    onChange={e => setRenderEmail(e.target.value)}
+                    autoComplete="email"
+                    style={s.input}
+                    onFocus={e => {
+                      e.target.style.borderColor = 'var(--green)'
+                      e.target.style.boxShadow   = '0 0 0 3px rgba(0,230,118,0.1)'
+                    }}
+                    onBlur={e => {
+                      e.target.style.borderColor = 'var(--border)'
+                      e.target.style.boxShadow   = 'none'
+                    }}
+                  />
+                </div>
+              </div>
+
+              <hr style={s.divider} />
+
+              {/* Photo */}
+              <div style={s.fieldSection}>
+                <span style={s.fieldLabel}>Foto actual del espacio</span>
+                <div style={{ maxWidth: '320px' }}>
+                  <DropZone
+                    tag="Foto del espacio"
+                    preview={previewRender}
+                    isDragOver={dragOver === 'render'}
+                    inputRef={refRender}
+                    onDrop={e => handleDrop(e, 'render')}
+                    onDragOver={e => handleDragOver(e, 'render')}
+                    onDragLeave={() => setDragOver(null)}
+                    onClick={() => refRender.current?.click()}
+                    onChange={e => e.target.files?.[0] && handleFile(e.target.files[0], 'render')}
+                  />
+                </div>
+              </div>
+
+              <hr style={s.divider} />
+
+              {/* Espacio */}
+              <div style={s.fieldSection}>
+                <span style={s.fieldLabel}>Tipo de espacio</span>
+                <div style={s.selectorGrid}>
+                  {ESPACIOS.map(item => (
+                    <SelectorCard
+                      key={item.id}
+                      label={item.label}
+                      icon={item.icon}
+                      selected={renderEspacio === item.label}
+                      onClick={() => setRenderEspacio(item.label)}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              <hr style={s.divider} />
+
+              {/* Preferencias */}
+              <div style={s.fieldSection}>
+                <label style={s.fieldLabel} htmlFor="preferencias">
+                  ¿Algo específico que quieras en tu diseño?
+                  <span style={{ fontFamily: 'var(--font-body)', letterSpacing: 0, textTransform: 'none', fontSize: '12px', marginLeft: '8px', opacity: 0.6 }}>
+                    — opcional
+                  </span>
+                </label>
+                <textarea
+                  id="preferencias"
+                  placeholder="Ej: tonos verdes, estilo nórdico, mucha luz natural..."
+                  value={preferencias}
+                  onChange={e => setPreferencias(e.target.value)}
+                  style={s.textarea}
                   onFocus={e => {
                     e.target.style.borderColor = 'var(--green)'
                     e.target.style.boxShadow   = '0 0 0 3px rgba(0,230,118,0.1)'
@@ -586,126 +946,57 @@ export default function RenovarAI() {
                   }}
                 />
               </div>
-            </div>
 
-            <hr style={s.divider} />
-
-            {/* Photos */}
-            <div style={s.fieldSection}>
-              <span style={s.fieldLabel}>
-                Fotos del espacio
-                <span style={{ fontFamily: 'var(--font-body)', letterSpacing: 0, textTransform: 'none', fontSize: '12px', marginLeft: '8px', opacity: 0.6 }}>
-                  — antes y referencia
-                </span>
-              </span>
-              <div style={s.photosGrid}>
-                <DropZone
-                  tag="Foto Antes"
-                  preview={previewAntes}
-                  isDragOver={dragOver === 'antes'}
-                  inputRef={refAntes}
-                  onDrop={e => handleDrop(e, 'antes')}
-                  onDragOver={e => handleDragOver(e, 'antes')}
-                  onDragLeave={() => setDragOver(null)}
-                  onClick={() => refAntes.current?.click()}
-                  onChange={e => e.target.files?.[0] && handleFile(e.target.files[0], 'antes')}
-                />
-                <DropZone
-                  tag="Foto Después"
-                  preview={previewDespues}
-                  isDragOver={dragOver === 'despues'}
-                  inputRef={refDespues}
-                  onDrop={e => handleDrop(e, 'despues')}
-                  onDragOver={e => handleDragOver(e, 'despues')}
-                  onDragLeave={() => setDragOver(null)}
-                  onClick={() => refDespues.current?.click()}
-                  onChange={e => e.target.files?.[0] && handleFile(e.target.files[0], 'despues')}
-                />
-              </div>
-            </div>
-
-            <hr style={s.divider} />
-
-            {/* Espacio */}
-            <div style={s.fieldSection}>
-              <span style={s.fieldLabel}>Tipo de espacio</span>
-              <div style={s.selectorGrid}>
-                {ESPACIOS.map(item => (
-                  <SelectorCard
-                    key={item.id}
-                    label={item.label}
-                    icon={item.icon}
-                    selected={espacio === item.label}
-                    onClick={() => setEspacio(item.label)}
-                  />
-                ))}
-              </div>
-            </div>
-
-            <hr style={s.divider} />
-
-            {/* Estilo */}
-            <div style={s.fieldSection}>
-              <span style={s.fieldLabel}>Estilo de diseño</span>
-              <div style={s.selectorGrid}>
-                {ESTILOS.map(item => (
-                  <SelectorCard
-                    key={item.id}
-                    label={item.label}
-                    selected={estilo === item.label}
-                    onClick={() => setEstilo(item.label)}
-                  />
-                ))}
-              </div>
-            </div>
-
-            {/* Error */}
-            {error && (
-              <div style={s.errorMsg}>
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="12" r="10" />
-                  <line x1="12" y1="8" x2="12" y2="12" />
-                  <line x1="12" y1="16" x2="12.01" y2="16" />
-                </svg>
-                {error}
-              </div>
-            )}
-
-            {/* Submit */}
-            <button
-              type="submit"
-              disabled={loading}
-              style={{
-                ...s.submitBtn,
-                opacity: loading ? 0.7 : 1,
-                cursor: loading ? 'not-allowed' : 'pointer',
-              }}
-              onMouseEnter={e => { if (!loading) e.currentTarget.style.opacity = '0.88' }}
-              onMouseLeave={e => { if (!loading) e.currentTarget.style.opacity = '1' }}
-            >
-              {loading ? (
-                <>
-                  <span style={{
-                    width: '18px', height: '18px',
-                    border: '2px solid rgba(10,10,10,0.3)',
-                    borderTopColor: '#0a0a0a',
-                    borderRadius: '50%',
-                    animation: 'spin 0.7s linear infinite',
-                    flexShrink: 0,
-                  }} />
-                  Procesando…
-                </>
-              ) : (
-                <>
-                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                    <polygon points="23 7 16 12 23 17 23 7" />
-                    <rect x="1" y="5" width="15" height="14" rx="2" />
+              {/* Error */}
+              {error && (
+                <div style={s.errorMsg}>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="12" y1="8" x2="12" y2="12" />
+                    <line x1="12" y1="16" x2="12.01" y2="16" />
                   </svg>
-                  Generar mi video
-                </>
+                  {error}
+                </div>
               )}
-            </button>
-          </form>
+
+              {/* Submit */}
+              <button
+                type="submit"
+                disabled={loading}
+                style={{
+                  ...s.submitBtn,
+                  opacity: loading ? 0.7 : 1,
+                  cursor: loading ? 'not-allowed' : 'pointer',
+                }}
+                onMouseEnter={e => { if (!loading) e.currentTarget.style.opacity = '0.88' }}
+                onMouseLeave={e => { if (!loading) e.currentTarget.style.opacity = '1' }}
+              >
+                {loading ? (
+                  <>
+                    <span style={{
+                      width: '18px', height: '18px',
+                      border: '2px solid rgba(10,10,10,0.3)',
+                      borderTopColor: '#0a0a0a',
+                      borderRadius: '50%',
+                      animation: 'spin 0.7s linear infinite',
+                      flexShrink: 0,
+                    }} />
+                    Procesando…
+                  </>
+                ) : (
+                  <>
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="3" y="3" width="18" height="18" rx="2" />
+                      <circle cx="8.5" cy="8.5" r="1.5" />
+                      <polyline points="21 15 16 10 5 21" />
+                    </svg>
+                    Generar mi render
+                  </>
+                )}
+              </button>
+            </form>
+          )}
+
         </div>
       </div>
 
