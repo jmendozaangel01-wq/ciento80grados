@@ -19,10 +19,7 @@ const ESPACIOS = [
 const ESTILOS = [
   { id: 'moderno-minimalista', label: 'Moderno Minimalista' },
   { id: 'industrial',          label: 'Industrial'          },
-  { id: 'escandinavo',         label: 'Escandinavo'         },
-  { id: 'mediterraneo',        label: 'Mediterráneo'        },
   { id: 'rustico',             label: 'Rústico'             },
-  { id: 'contemporaneo',       label: 'Contemporáneo'       },
 ]
 
 // ── Styles ─────────────────────────────────────────────────────────────────
