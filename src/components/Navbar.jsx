@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
 const homeLinks = [
@@ -11,8 +11,12 @@ const homeLinks = [
 export default function Navbar() {
   const [scrolled,   setScrolled]   = useState(false)
   const [menuOpen,   setMenuOpen]   = useState(false)
+  const [aiOpen,     setAiOpen]     = useState(false)
+  const [mobileAiOpen, setMobileAiOpen] = useState(false)
+  const dropdownRef = useRef(null)
   const location = useLocation()
   const isHome = location.pathname === '/'
+  const isAiRoute = ['/instagram', '/renovar-ai'].includes(location.pathname)
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 24)
@@ -20,8 +24,23 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handler)
   }, [])
 
-  // cerrar menú al cambiar de ruta
-  useEffect(() => { setMenuOpen(false) }, [location.pathname])
+  // cerrar menús al cambiar de ruta
+  useEffect(() => {
+    setMenuOpen(false)
+    setAiOpen(false)
+    setMobileAiOpen(false)
+  }, [location.pathname])
+
+  // cerrar dropdown desktop al hacer click fuera
+  useEffect(() => {
+    const handler = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setAiOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [])
 
   // bloquear scroll del body cuando el menú está abierto
   useEffect(() => {
@@ -50,21 +69,37 @@ export default function Navbar() {
                   }
                 </li>
               ))}
-              <li>
-                <Link
-                  to="/instagram"
-                  style={location.pathname === '/instagram' ? { color: 'var(--green)' } : {}}
+              <li className="nav-dropdown" ref={dropdownRef}>
+                <button
+                  className={`nav-dropdown-trigger${isAiRoute ? ' active' : ''}`}
+                  onClick={() => setAiOpen(o => !o)}
+                  aria-expanded={aiOpen}
                 >
-                  Instagram
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/renovar-ai"
-                  style={location.pathname === '/renovar-ai' ? { color: 'var(--green)' } : {}}
-                >
-                  Renovar AI
-                </Link>
+                  Herramientas IA
+                  <svg className={`nav-dropdown-arrow${aiOpen ? ' open' : ''}`} width="10" height="6" viewBox="0 0 10 6" fill="none">
+                    <path d="M1 1l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </button>
+                {aiOpen && (
+                  <ul className="nav-dropdown-menu">
+                    <li>
+                      <Link
+                        to="/instagram"
+                        style={location.pathname === '/instagram' ? { color: 'var(--green)' } : {}}
+                      >
+                        Instagram
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to="/renovar-ai"
+                        style={location.pathname === '/renovar-ai' ? { color: 'var(--green)' } : {}}
+                      >
+                        Renovar AI
+                      </Link>
+                    </li>
+                  </ul>
+                )}
               </li>
             </ul>
 
@@ -104,22 +139,37 @@ export default function Navbar() {
             </li>
           ))}
           <li>
-            <Link
-              to="/instagram"
-              className="mobile-menu-highlight"
-              onClick={handleAnchorClick}
+            <button
+              className={`mobile-ai-toggle${isAiRoute ? ' active' : ''}`}
+              onClick={() => setMobileAiOpen(o => !o)}
             >
-              Instagram
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/renovar-ai"
-              className="mobile-menu-highlight"
-              onClick={handleAnchorClick}
-            >
-              Renovar AI
-            </Link>
+              Herramientas IA
+              <svg className={`nav-dropdown-arrow${mobileAiOpen ? ' open' : ''}`} width="10" height="6" viewBox="0 0 10 6" fill="none">
+                <path d="M1 1l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+            {mobileAiOpen && (
+              <ul className="mobile-ai-submenu">
+                <li>
+                  <Link
+                    to="/instagram"
+                    className={location.pathname === '/instagram' ? 'mobile-menu-highlight' : ''}
+                    onClick={handleAnchorClick}
+                  >
+                    Instagram
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/renovar-ai"
+                    className={location.pathname === '/renovar-ai' ? 'mobile-menu-highlight' : ''}
+                    onClick={handleAnchorClick}
+                  >
+                    Renovar AI
+                  </Link>
+                </li>
+              </ul>
+            )}
           </li>
         </ul>
 
