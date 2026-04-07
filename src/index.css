@@ -890,7 +890,14 @@ section { padding: var(--pad-section) 0; }
   align-items: center;
   justify-content: center;
   transition: border-color 0.3s, background 0.3s, box-shadow 0.3s;
+  animation: firefly 2s ease-in-out infinite;
 }
+@keyframes firefly {
+  0%, 100% { box-shadow: none; border-color: rgba(255,255,255,0.18); }
+  50%       { box-shadow: 0 0 10px rgba(0, 230, 118, 0.25); border-color: rgba(0, 230, 118, 0.4); }
+}
+.orbit-node:hover .orbit-node-dot,
+.orbit-node--active .orbit-node-dot { animation: none; }
 .orbit-node:hover .orbit-node-dot,
 .orbit-node--active .orbit-node-dot {
   border-color: var(--green);
