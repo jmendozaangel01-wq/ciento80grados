@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, lazy, Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
@@ -8,8 +8,9 @@ import Portfolio from './components/Portfolio'
 import YouTube from './components/YouTube'
 import NewsFeed from './components/NewsFeed'
 import Contact from './components/Contact'
-import InstagramPage from './pages/InstagramPage'
-import RenovarAI from './pages/RenovarAI'
+
+const InstagramPage = lazy(() => import('./pages/InstagramPage'))
+const RenovarAI     = lazy(() => import('./pages/RenovarAI'))
 
 function Home() {
   useEffect(() => {
@@ -62,11 +63,13 @@ export default function App() {
   return (
     <>
       <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/instagram" element={<InstagramPage />} />
-        <Route path="/renovar-ai" element={<RenovarAI />} />
-      </Routes>
+      <Suspense fallback={null}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/instagram" element={<InstagramPage />} />
+          <Route path="/renovar-ai" element={<RenovarAI />} />
+        </Routes>
+      </Suspense>
     </>
   )
 }
