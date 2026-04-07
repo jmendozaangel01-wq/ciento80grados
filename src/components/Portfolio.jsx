@@ -8,7 +8,7 @@ const PROJECTS = [
     desc: 'Sitio institucional para Centro Radiológico del Caribe — IPS líder en Cartagena. Dark theme médico, carrusel de servicios, sección de especialidades y formulario de contacto.',
     tech: ['HTML / CSS', 'JavaScript', 'Diseño Web'],
     link: 'https://crcsas.com/',
-    symbol: '▲',
+    symbol: '○',
   },
   {
     id: 2,
@@ -17,7 +17,7 @@ const PROJECTS = [
     desc: 'Tienda Shopify de moda con diseño personalizado, apps de conversión y catálogo optimizado para maximizar ventas.',
     tech: ['Shopify', 'Liquid', 'Apps'],
     link: 'https://www.salimehstore.com/',
-    symbol: '■',
+    symbol: '○',
   },
   {
     id: 3,
@@ -26,7 +26,7 @@ const PROJECTS = [
     desc: 'Plataforma de comercio electrónico con catálogo extenso y checkout optimizado para conversión.',
     tech: ['Shopify', 'Apps'],
     link: 'https://www.bornosbuy.com/',
-    symbol: '●',
+    symbol: '○',
   },
   {
     id: 4,
@@ -35,7 +35,42 @@ const PROJECTS = [
     desc: 'Panel de control HACCP para planta de producción — monitoreo de freidoras, cuartos fríos y puntos críticos en tiempo real, sincronizado con Google Sheets.',
     tech: ['Google Sheets', 'APIs'],
     link: 'https://jmendozaangel01-wq.github.io/control-freidora/',
-    symbol: '◆',
+    symbol: '○',
+  },
+  {
+    id: 5,
+    title: 'Feed de Noticias',
+    tag: 'Automatización · n8n',
+    desc: 'Flujo RSS con n8n que agrega noticias de múltiples fuentes, las procesa y las publica automáticamente en el sitio — siempre actualizado sin intervención manual.',
+    tech: ['n8n', 'RSS', 'Automatización'],
+    link: '/#noticias',
+    symbol: '○',
+  },
+  {
+    id: 7,
+    title: 'Analizador Instagram',
+    tag: 'Automatización · n8n',
+    desc: 'Flujo que scrapea cuentas de Instagram y genera un reporte detallado de competencia — likes, comentarios, posts ganadores y patrones de contenido para tomar decisiones basadas en datos.',
+    tech: ['n8n', 'Scraping', 'Análisis'],
+    link: '/instagram',
+    symbol: '○',
+  },
+  {
+    id: 8,
+    title: 'Renovar AI',
+    tag: 'Herramienta IA · Diseño',
+    desc: 'Transforma espacios con IA — sube una foto de tu cuarto, sala u oficina y obtén una renovación visual en estilo minimalista o construcción. También genera videos de transición antes/después, ideal para arquitectos e ingenieros civiles.',
+    tech: ['IA Generativa', 'n8n', 'Diseño'],
+    link: '/renovar-ai',
+    symbol: '○',
+  },
+  {
+    id: 10,
+    title: 'Comparador de Precios',
+    tag: 'Automatización · n8n',
+    desc: 'Workflows de scraping para Coach y On Running — escanea +500 productos, detecta disponibilidad de stock y genera un reporte detallado automatizado.',
+    tech: ['n8n', 'Scraping', 'Automatización'],
+    symbol: '○',
   },
 ]
 
@@ -134,7 +169,7 @@ export default function Portfolio() {
                 <div className="orbit-panel-tech">
                   {active.tech.map(t => <span key={t} className="tag">{t}</span>)}
                 </div>
-                <a href={active.link} className="portfolio-link">Ver proyecto &rarr;</a>
+                {active.link && <a href={active.link} className="portfolio-link">Ver proyecto &rarr;</a>}
               </div>
             ) : (
               <div className="orbit-panel orbit-panel--empty">
