@@ -561,6 +561,7 @@ export default function RenovarAI() {
   const [renderEstilo, setRenderEstilo]       = useState('')
   const [presupuesto, setPresupuesto]         = useState('')
   const [noQuiero, setNoQuiero]               = useState('')
+  const [agregar, setAgregar]                 = useState('')
   const [mantener, setMantener]               = useState('')
 
   // Shared
@@ -660,6 +661,7 @@ export default function RenovarAI() {
           estilo:         renderEstilo,
           presupuesto,
           no_quiero:      noQuiero,
+          agregar,
           mantener,
         }),
       })
@@ -678,7 +680,7 @@ export default function RenovarAI() {
     setEspacio(''); setEstilo('')
     setRenderEmail(''); setFotoRender(null); setPreviewRender('')
     setRenderEspacio(''); setRenderEstilo(''); setPresupuesto('')
-    setNoQuiero(''); setMantener('')
+    setNoQuiero(''); setAgregar(''); setMantener('')
     setError(''); setSuccess(false)
   }
 
@@ -1002,6 +1004,31 @@ export default function RenovarAI() {
                   placeholder="Ej: no quiero colores oscuros, no quiero madera, mantener la ventana tal como está..."
                   value={noQuiero}
                   onChange={e => setNoQuiero(e.target.value)}
+                  style={s.textarea}
+                  onFocus={e => {
+                    e.target.style.borderColor = 'var(--green)'
+                    e.target.style.boxShadow   = '0 0 0 3px rgba(0,230,118,0.1)'
+                  }}
+                  onBlur={e => {
+                    e.target.style.borderColor = 'var(--border)'
+                    e.target.style.boxShadow   = 'none'
+                  }}
+                />
+              </div>
+
+              {/* ¿Qué quieres agregar o cambiar? */}
+              <div style={s.fieldSection}>
+                <label style={s.fieldLabel} htmlFor="agregar">
+                  ¿Qué quieres agregar o cambiar?
+                  <span style={{ fontFamily: 'var(--font-body)', letterSpacing: 0, textTransform: 'none', fontSize: '12px', marginLeft: '8px', opacity: 0.6 }}>
+                    — opcional
+                  </span>
+                </label>
+                <textarea
+                  id="agregar"
+                  placeholder="Ej: quiero una chimenea, cambiar el piso por madera oscura, agregar una pared de ladrillo, sofá seccional en L..."
+                  value={agregar}
+                  onChange={e => setAgregar(e.target.value)}
                   style={s.textarea}
                   onFocus={e => {
                     e.target.style.borderColor = 'var(--green)'
