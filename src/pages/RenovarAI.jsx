@@ -21,6 +21,19 @@ const ESTILOS = [
   { id: 'industrial',          label: 'Industrial'          },
 ]
 
+const ESTILOS_RENDER = [
+  { id: 'moderno-minimalista', label: 'Moderno Minimalista' },
+  { id: 'industrial',          label: 'Industrial'          },
+  { id: 'contemporaneo',       label: 'Contemporáneo'       },
+  { id: 'mediterraneo',        label: 'Mediterráneo'        },
+]
+
+const PRESUPUESTOS = [
+  { id: 'basico',  label: 'Básico',   hint: 'mejoras puntuales'    },
+  { id: 'medio',   label: 'Medio',    hint: 'renovación completa'  },
+  { id: 'premium', label: 'Premium',  hint: 'transformación total' },
+]
+
 // ── Styles ─────────────────────────────────────────────────────────────────
 
 const s = {
@@ -357,7 +370,7 @@ function DropZone({ tag, preview, isDragOver, inputRef, onDrop, onDragOver, onDr
 
 // ── Selector Card ──────────────────────────────────────────────────────────
 
-function SelectorCard({ label, icon, selected, onClick }) {
+function SelectorCard({ label, icon, hint, selected, onClick }) {
   return (
     <button
       type="button"
@@ -367,7 +380,7 @@ function SelectorCard({ label, icon, selected, onClick }) {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: icon ? '6px' : '0',
+        gap: icon ? '6px' : hint ? '4px' : '0',
         padding: '16px 10px',
         minHeight: icon ? 'auto' : '60px',
         background: selected ? 'rgba(0,230,118,0.08)' : 'var(--bg-card-alt)',
@@ -396,6 +409,18 @@ function SelectorCard({ label, icon, selected, onClick }) {
       }}>
         {label}
       </span>
+      {hint && (
+        <span style={{
+          fontFamily: 'var(--font-mono)',
+          fontSize: '10px',
+          letterSpacing: '0.06em',
+          color: selected ? 'var(--green)' : 'var(--muted)',
+          opacity: selected ? 1 : 0.6,
+          lineHeight: 1.3,
+        }}>
+          {hint}
+        </span>
+      )}
     </button>
   )
 }
@@ -533,7 +558,10 @@ export default function RenovarAI() {
   const [fotoRender, setFotoRender]           = useState(null)
   const [previewRender, setPreviewRender]     = useState('')
   const [renderEspacio, setRenderEspacio]     = useState('')
-  const [preferencias, setPreferencias]       = useState('')
+  const [renderEstilo, setRenderEstilo]       = useState('')
+  const [presupuesto, setPresupuesto]         = useState('')
+  const [noQuiero, setNoQuiero]               = useState('')
+  const [mantener, setMantener]               = useState('')
 
   // Shared
   const [loading, setLoading]                 = useState(false)
@@ -614,7 +642,7 @@ export default function RenovarAI() {
 
   const handleSubmitRender = async (e) => {
     e.preventDefault()
-    if (!renderEmail || !fotoRender || !renderEspacio) {
+    if (!renderEmail || !fotoRender || !renderEspacio || !renderEstilo || !presupuesto) {
       setError('Por favor completa todos los campos antes de continuar.')
       return
     }
@@ -629,7 +657,10 @@ export default function RenovarAI() {
           email:          renderEmail,
           foto_antes_url: fotoAntesUrl,
           espacio:        renderEspacio,
-          preferencias,
+          estilo:         renderEstilo,
+          presupuesto,
+          no_quiero:      noQuiero,
+          mantener,
         }),
       })
       setSuccess(true)
@@ -646,7 +677,8 @@ export default function RenovarAI() {
     setPreviewAntes(''); setPreviewDespues('')
     setEspacio(''); setEstilo('')
     setRenderEmail(''); setFotoRender(null); setPreviewRender('')
-    setRenderEspacio(''); setPreferencias('')
+    setRenderEspacio(''); setRenderEstilo(''); setPresupuesto('')
+    setNoQuiero(''); setMantener('')
     setError(''); setSuccess(false)
   }
 
@@ -922,19 +954,79 @@ export default function RenovarAI() {
 
               <hr style={s.divider} />
 
-              {/* Preferencias */}
+              {/* Estilo de diseño */}
               <div style={s.fieldSection}>
-                <label style={s.fieldLabel} htmlFor="preferencias">
-                  ¿Algo específico que quieras en tu diseño?
+                <span style={s.fieldLabel}>Estilo de diseño</span>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
+                  {ESTILOS_RENDER.map(item => (
+                    <SelectorCard
+                      key={item.id}
+                      label={item.label}
+                      selected={renderEstilo === item.id}
+                      onClick={() => setRenderEstilo(item.id)}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              <hr style={s.divider} />
+
+              {/* Presupuesto */}
+              <div style={s.fieldSection}>
+                <span style={s.fieldLabel}>Presupuesto</span>
+                <div style={s.selectorGrid}>
+                  {PRESUPUESTOS.map(item => (
+                    <SelectorCard
+                      key={item.id}
+                      label={item.label}
+                      hint={item.hint}
+                      selected={presupuesto === item.id}
+                      onClick={() => setPresupuesto(item.id)}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              <hr style={s.divider} />
+
+              {/* ¿Qué NO quieres? */}
+              <div style={s.fieldSection}>
+                <label style={s.fieldLabel} htmlFor="no-quiero">
+                  ¿Qué NO quieres en el diseño?
                   <span style={{ fontFamily: 'var(--font-body)', letterSpacing: 0, textTransform: 'none', fontSize: '12px', marginLeft: '8px', opacity: 0.6 }}>
                     — opcional
                   </span>
                 </label>
                 <textarea
-                  id="preferencias"
-                  placeholder="Ej: tonos verdes, estilo nórdico, mucha luz natural..."
-                  value={preferencias}
-                  onChange={e => setPreferencias(e.target.value)}
+                  id="no-quiero"
+                  placeholder="Ej: no quiero colores oscuros, no quiero madera, mantener la ventana tal como está..."
+                  value={noQuiero}
+                  onChange={e => setNoQuiero(e.target.value)}
+                  style={s.textarea}
+                  onFocus={e => {
+                    e.target.style.borderColor = 'var(--green)'
+                    e.target.style.boxShadow   = '0 0 0 3px rgba(0,230,118,0.1)'
+                  }}
+                  onBlur={e => {
+                    e.target.style.borderColor = 'var(--border)'
+                    e.target.style.boxShadow   = 'none'
+                  }}
+                />
+              </div>
+
+              {/* ¿Qué quieres mantener? */}
+              <div style={s.fieldSection}>
+                <label style={s.fieldLabel} htmlFor="mantener">
+                  ¿Qué quieres mantener?
+                  <span style={{ fontFamily: 'var(--font-body)', letterSpacing: 0, textTransform: 'none', fontSize: '12px', marginLeft: '8px', opacity: 0.6 }}>
+                    — opcional
+                  </span>
+                </label>
+                <textarea
+                  id="mantener"
+                  placeholder="Ej: mantener el sofá actual, mantener la distribución, conservar la lámpara del techo..."
+                  value={mantener}
+                  onChange={e => setMantener(e.target.value)}
                   style={s.textarea}
                   onFocus={e => {
                     e.target.style.borderColor = 'var(--green)'
