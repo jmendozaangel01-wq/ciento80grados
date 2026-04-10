@@ -59,13 +59,16 @@ export default function About() {
               desde otro ángulo.
             </p>
             <p className="about-bio reveal">
-              Me especializo en tres cosas: construir sitios y plataformas web funcionales y que convierten,
-              automatizar procesos con n8n para que los negocios escalen sin contratar más personal,
-              administro, edito, monto y optimizo tiendas Shopify que venden de verdad.
+              Hoy construyo productos digitales usando una mezcla de vibecoding, inteligencia artificial y herramientas modernas como Claude Code, lo que me permite materializar ideas rápidamente y convertirlas en soluciones reales: desde plataformas web hasta automatizaciones complejas.
             </p>
-            <p className="about-bio reveal">
-              Cada proyecto empieza desde cero, con intención,
-              y termina cuando funciona como tiene que funcionar.
+            <p className="about-bio reveal">Me especializo en tres áreas:</p>
+            <ul className="about-specialties reveal">
+              <li>Construcción de sitios y plataformas web diseñadas para convertir, no solo para verse bien.</li>
+              <li>Automatización de procesos con n8n, para que los negocios puedan escalar sin aumentar su carga operativa ni contratar más personal.</li>
+              <li>Gestión, optimización y desarrollo de tiendas Shopify que realmente venden.</li>
+            </ul>
+            <p className="about-bio about-goal reveal">
+              Mi objetivo es ayudar a negocios y creadores a pasar de la idea a la ejecución, construyendo sistemas digitales que trabajen por ellos.
             </p>
 
             <div className="about-stack reveal">
