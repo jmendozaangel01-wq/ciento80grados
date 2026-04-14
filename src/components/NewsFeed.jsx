@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 
 const CATEGORIES = ['Tech', 'IA', 'Política', 'Deporte', 'Finanzas', 'Todos']
-const WEBHOOK = 'https://n8n.srv1469845.hstgr.cloud/webhook/noticias'
+const WEBHOOK = 'https://n8n.srv1587395.hstgr.cloud/webhook/noticias'
 
 export default function NewsFeed() {
   const [active, setActive]   = useState('Tech')
