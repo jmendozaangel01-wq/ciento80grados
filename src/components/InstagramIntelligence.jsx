@@ -27,7 +27,7 @@ const ANALYSIS_TYPES = [
   },
 ]
 
-const WEBHOOK_URL = 'https://n8n.srv1469845.hstgr.cloud/webhook/instagram-intelligence'
+const WEBHOOK_URL = 'https://n8n.srv1587395.hstgr.cloud/webhook/instagram-intelligence'
 
 /* ─── inline style tokens ─────────────────────────────────── */
 const T = {
