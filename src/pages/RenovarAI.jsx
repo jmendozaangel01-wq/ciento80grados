@@ -621,7 +621,7 @@ export default function RenovarAI() {
         uploadPhoto(fotoAntes, 'antes'),
         uploadPhoto(fotoDespues, 'despues'),
       ])
-      await fetch('https://n8n.srv1469845.hstgr.cloud/webhook/renovar-ai', {
+      await fetch('https://n8n.srv1587395.hstgr.cloud/webhook/renovar-ai', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -651,7 +651,7 @@ export default function RenovarAI() {
     setLoading(true)
     try {
       const fotoAntesUrl = await uploadPhoto(fotoRender, 'render')
-      await fetch('https://n8n.srv1469845.hstgr.cloud/webhook/renovar-ai-render', {
+      await fetch('https://n8n.srv1587395.hstgr.cloud/webhook/renovar-ai-render', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
