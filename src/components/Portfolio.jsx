@@ -56,6 +56,15 @@ const PROJECTS = [
     symbol: '○',
   },
   {
+    id: 9,
+    title: 'Hero Animado con IA',
+    tag: 'Herramienta IA · Guía',
+    desc: 'Guía práctica para crear videos tipo exploded view y particle morph con Kling AI e integrarlos como hero banner en tu página web.',
+    tech: ['Kling AI', 'Video IA', 'Hero Web'],
+    link: '/guia-hero',
+    symbol: '○',
+  },
+  {
     id: 8,
     title: 'Renovar AI',
     tag: 'Herramienta IA · Diseño',

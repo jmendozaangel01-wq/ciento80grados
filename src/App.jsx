@@ -11,6 +11,7 @@ import Contact from './components/Contact'
 
 const InstagramPage = lazy(() => import('./pages/InstagramPage'))
 const RenovarAI     = lazy(() => import('./pages/RenovarAI'))
+const GuiaHero      = lazy(() => import('./pages/GuiaHero'))
 
 function Home() {
   useEffect(() => {
@@ -68,6 +69,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/instagram" element={<InstagramPage />} />
           <Route path="/renovar-ai" element={<RenovarAI />} />
+          <Route path="/guia-hero" element={<GuiaHero />} />
         </Routes>
       </Suspense>
     </>
