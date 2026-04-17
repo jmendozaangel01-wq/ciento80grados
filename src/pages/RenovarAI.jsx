@@ -14,6 +14,9 @@ const ESPACIOS = [
   { id: 'dormitorio',    label: 'Dormitorio',     icon: '🛏️' },
   { id: 'oficina',       label: 'Oficina',        icon: '💼' },
   { id: 'terraza',       label: 'Terraza',        icon: '🌿' },
+  { id: 'piscina',       label: 'Piscina',        icon: '🏊' },
+  { id: 'jardin',        label: 'Jardín',         icon: '🌳' },
+  { id: 'fachada',       label: 'Fachada',        icon: '🏠' },
 ]
 
 const ESTILOS = [
