@@ -24,6 +24,15 @@ const ESTILOS = [
   { id: 'industrial',          label: 'Industrial'          },
 ]
 
+const TIPOS_ESPACIO_RENDER = [
+  { id: 'sala',       label: 'Sala / Comedor'    },
+  { id: 'cocina',     label: 'Cocina'            },
+  { id: 'habitacion', label: 'Habitación'        },
+  { id: 'baño',       label: 'Baño'              },
+  { id: 'fachada',    label: 'Fachada exterior'  },
+  { id: 'jardin',     label: 'Jardín'            },
+  { id: 'piscina',    label: 'Piscina'           },
+]
 
 // ── Styles ─────────────────────────────────────────────────────────────────
 
@@ -546,6 +555,7 @@ export default function RenovarAI() {
 
   // Render form state
   const [renderEmail, setRenderEmail]         = useState('')
+  const [tipoEspacio, setTipoEspacio]         = useState('')
   const [fotoRender, setFotoRender]           = useState(null)
   const [previewRender, setPreviewRender]     = useState('')
   const [queCambiar, setQueCambiar]           = useState('')
@@ -630,7 +640,7 @@ export default function RenovarAI() {
 
   const handleSubmitRender = async (e) => {
     e.preventDefault()
-    if (!renderEmail || !fotoRender || !queCambiar) {
+    if (!renderEmail || !tipoEspacio || !fotoRender || !queCambiar) {
       setError('Por favor completa todos los campos antes de continuar.')
       return
     }
@@ -638,10 +648,7 @@ export default function RenovarAI() {
     setLoading(true)
     try {
       const fotoAntesUrl = await uploadPhoto(fotoRender, 'render')
-      const message = [
-        `What to change: ${queCambiar}`,
-        `What to keep or avoid: ${queMantener}`,
-      ].join('\n')
+      const message = `CAMBIAR: ${queCambiar}${queMantener ? '. MANTENER: ' + queMantener : ''}`
       await fetch('https://n8n.srv1587395.hstgr.cloud/webhook/renovar-ai-render', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -649,6 +656,7 @@ export default function RenovarAI() {
           email:          renderEmail,
           foto_antes_url: fotoAntesUrl,
           message,
+          tipo_espacio:   tipoEspacio,
         }),
       })
       setSuccess(true)
@@ -664,7 +672,7 @@ export default function RenovarAI() {
     setEmail(''); setFotoAntes(null); setFotoDespues(null)
     setPreviewAntes(''); setPreviewDespues('')
     setEspacio(''); setEstilo('')
-    setRenderEmail(''); setFotoRender(null); setPreviewRender('')
+    setRenderEmail(''); setTipoEspacio(''); setFotoRender(null); setPreviewRender('')
     setQueCambiar(''); setQueMantener('')
     setError(''); setSuccess(false)
   }
@@ -898,6 +906,23 @@ export default function RenovarAI() {
                       e.target.style.boxShadow   = 'none'
                     }}
                   />
+                </div>
+              </div>
+
+              <hr style={s.divider} />
+
+              {/* Tipo de espacio */}
+              <div style={s.fieldSection}>
+                <span style={s.fieldLabel}>Tipo de espacio</span>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px' }}>
+                  {TIPOS_ESPACIO_RENDER.map(item => (
+                    <SelectorCard
+                      key={item.id}
+                      label={item.label}
+                      selected={tipoEspacio === item.id}
+                      onClick={() => setTipoEspacio(item.id)}
+                    />
+                  ))}
                 </div>
               </div>
 
