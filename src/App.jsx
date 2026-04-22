@@ -9,9 +9,10 @@ import YouTube from './components/YouTube'
 import NewsFeed from './components/NewsFeed'
 import Contact from './components/Contact'
 
-const InstagramPage = lazy(() => import('./pages/InstagramPage'))
-const RenovarAI     = lazy(() => import('./pages/RenovarAI'))
-const GuiaHero      = lazy(() => import('./pages/GuiaHero'))
+const InstagramPage  = lazy(() => import('./pages/InstagramPage'))
+const RenovarAI      = lazy(() => import('./pages/RenovarAI'))
+const GuiaHero       = lazy(() => import('./pages/GuiaHero'))
+const NikeDashboard  = lazy(() => import('./pages/NikeDashboard'))
 
 function Home() {
   useEffect(() => {
@@ -70,6 +71,7 @@ export default function App() {
           <Route path="/instagram" element={<InstagramPage />} />
           <Route path="/renovar-ai" element={<RenovarAI />} />
           <Route path="/guia-hero" element={<GuiaHero />} />
+          <Route path="/dashboard" element={<NikeDashboard />} />
         </Routes>
       </Suspense>
     </>

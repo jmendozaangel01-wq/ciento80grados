@@ -74,6 +74,15 @@ const PROJECTS = [
     symbol: '○',
   },
   {
+    id: 11,
+    title: 'Monitor Nike',
+    tag: 'Herramienta IA · Dashboard',
+    desc: 'Dashboard en tiempo real que monitorea precios y disponibilidad de tallas Nike. Lee datos desde Google Sheets actualizado por n8n — fotos de producto, diferencial de precio y alertas de stock.',
+    tech: ['Google Sheets', 'n8n', 'React'],
+    link: '/dashboard',
+    symbol: '○',
+  },
+  {
     id: 10,
     title: 'Comparador de Precios',
     tag: 'Automatización · n8n',
