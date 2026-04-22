@@ -1021,6 +1021,31 @@ section { padding: var(--pad-section) 0; }
 }
 .portfolio-link:hover { gap: 14px; }
 
+.portfolio-pdf-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 48px;
+}
+
+.portfolio-pdf-btn {
+  display: inline-flex;
+  align-items: center;
+  background: var(--green);
+  color: #0a0a0a;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 14px 32px;
+  border: 1px solid var(--green);
+  border-radius: 3px;
+  letter-spacing: 0.02em;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.portfolio-pdf-btn:hover {
+  background: transparent;
+  color: var(--green);
+}
+
 /* ── News Feed ────────────────────────────────────────────── */
 .news { border-top: 1px solid var(--border-sub); }
 

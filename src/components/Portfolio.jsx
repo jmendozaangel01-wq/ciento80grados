@@ -221,6 +221,18 @@ export default function Portfolio() {
           </div>
 
         </div>
+
+        <div className="portfolio-pdf-wrap">
+          <a
+            href="/180Grados_Servicios.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="portfolio-pdf-btn"
+            onClick={e => e.stopPropagation()}
+          >
+            Ver servicios y tarifas
+          </a>
+        </div>
       </div>
     </section>
   )
