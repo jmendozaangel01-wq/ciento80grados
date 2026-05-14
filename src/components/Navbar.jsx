@@ -16,7 +16,7 @@ export default function Navbar() {
   const dropdownRef = useRef(null)
   const location = useLocation()
   const isHome = location.pathname === '/'
-  const isAiRoute = ['/instagram', '/renovar-ai'].includes(location.pathname)
+  const isAiRoute = ['/instagram', '/renovar-ai', '/senalia'].includes(location.pathname)
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 24)
@@ -98,6 +98,14 @@ export default function Navbar() {
                         Renovar AI
                       </Link>
                     </li>
+                    <li>
+                      <Link
+                        to="/senalia"
+                        style={location.pathname === '/senalia' ? { color: 'var(--green)' } : {}}
+                      >
+                        SeñalIA
+                      </Link>
+                    </li>
                   </ul>
                 )}
               </li>
@@ -166,6 +174,15 @@ export default function Navbar() {
                     onClick={handleAnchorClick}
                   >
                     Renovar AI
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/senalia"
+                    className={location.pathname === '/senalia' ? 'mobile-menu-highlight' : ''}
+                    onClick={handleAnchorClick}
+                  >
+                    SeñalIA
                   </Link>
                 </li>
               </ul>

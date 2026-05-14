@@ -1438,3 +1438,28 @@ section { padding: var(--pad-section) 0; }
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
+
+/* ── SeñalIA ──────────────────────────────────────────────── */
+.glass-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+.sa-spinner {
+  width: 44px;
+  height: 44px;
+  border: 3px solid var(--green-dim);
+  border-top-color: var(--green);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+.fade-in {
+  animation: heroFade 0.4s var(--ease-expo) both;
+}
+@keyframes fillBar {
+  from { width: 0%; }
+  to   { width: var(--target-width); }
+}
+.prob-bar {
+  animation: fillBar 1.2s ease-out forwards;
+}

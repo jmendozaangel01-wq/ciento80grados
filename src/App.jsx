@@ -13,6 +13,7 @@ const InstagramPage  = lazy(() => import('./pages/InstagramPage'))
 const RenovarAI      = lazy(() => import('./pages/RenovarAI'))
 const GuiaHero       = lazy(() => import('./pages/GuiaHero'))
 const NikeDashboard  = lazy(() => import('./pages/NikeDashboard'))
+const SeñalIA        = lazy(() => import('./pages/Senalia'))
 
 function Home() {
   useEffect(() => {
@@ -72,6 +73,7 @@ export default function App() {
           <Route path="/renovar-ai" element={<RenovarAI />} />
           <Route path="/guia-hero" element={<GuiaHero />} />
           <Route path="/dashboard" element={<NikeDashboard />} />
+          <Route path="/senalia" element={<SeñalIA />} />
         </Routes>
       </Suspense>
     </>
