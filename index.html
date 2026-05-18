@@ -3,8 +3,6 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
     <title>Jairo Mendoza — The Builder</title>
     <meta name="description" content="Desarrollo web, automatizacion con n8n y e-commerce Shopify. Construyo cosas que importan." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -26,16 +24,10 @@
         g.async = true;
         s.parentNode.insertBefore(g,s);
         g.onload=function(){
-          console.log('[Chatwoot] SDK cargado, inicializando...')
           window.chatwootSDK.run({
             websiteToken: '7p3v1kFy6NvqArwFiWP3x9e7',
-            baseUrl: BASE_URL,
-            hideMessageBubble: false,
-            position: 'right',
-            locale: 'es',
-            useBrowserLanguage: false,
+            baseUrl: BASE_URL
           })
-          console.log('[Chatwoot] run() ejecutado')
         }
       })(document,"script");
     </script>
