@@ -26,18 +26,16 @@
         g.async = true;
         s.parentNode.insertBefore(g,s);
         g.onload=function(){
-          window.addEventListener('load', function() {
-            console.log('[Chatwoot] SDK cargado, inicializando...')
-            window.chatwootSDK.run({
-              websiteToken: '7p3v1kFy6NvqArwFiWP3x9e7',
-              baseUrl: BASE_URL,
-              hideMessageBubble: false,
-              position: 'right',
-              locale: 'es',
-              useBrowserLanguage: false,
-            })
-            console.log('[Chatwoot] run() ejecutado')
+          console.log('[Chatwoot] SDK cargado, inicializando...')
+          window.chatwootSDK.run({
+            websiteToken: '7p3v1kFy6NvqArwFiWP3x9e7',
+            baseUrl: BASE_URL,
+            hideMessageBubble: false,
+            position: 'right',
+            locale: 'es',
+            useBrowserLanguage: false,
           })
+          console.log('[Chatwoot] run() ejecutado')
         }
       })(document,"script");
     </script>
