@@ -4,6 +4,23 @@ import { BrowserRouter } from 'react-router-dom'
 import './index.css'
 import App from './App.jsx'
 
+const loadTime = Date.now()
+window.__APP_LOAD_TIME = loadTime
+console.log('[App] Cargado a:', new Date(loadTime).toLocaleTimeString())
+
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden') {
+    sessionStorage.setItem('last_hidden', Date.now())
+  }
+  if (document.visibilityState === 'visible') {
+    const hidden = sessionStorage.getItem('last_hidden')
+    if (hidden) {
+      const elapsed = (Date.now() - Number(hidden)) / 1000
+      console.log(`[App] Volvió del background tras ${elapsed.toFixed(0)}s`)
+    }
+  }
+})
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>

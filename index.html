@@ -26,7 +26,11 @@
         g.onload=function(){
           window.chatwootSDK.run({
             websiteToken: '7p3v1kFy6NvqArwFiWP3x9e7',
-            baseUrl: BASE_URL
+            baseUrl: BASE_URL,
+            hideMessageBubble: false,
+            position: 'right',
+            locale: 'es',
+            useBrowserLanguage: false,
           })
         }
       })(document,"script");
