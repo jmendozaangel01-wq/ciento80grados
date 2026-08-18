@@ -72,10 +72,20 @@ export default function NewsFeed() {
           ))}
         </div>
 
-        {loading && <p className="news-status">Cargando noticias...</p>}
-        {error   && <p className="news-status">No se pudieron cargar las noticias. Activa el workflow en n8n.</p>}
+        {error && <p className="news-status">No se pudieron cargar las noticias. Activa el workflow en n8n.</p>}
 
         <div className="news-grid">
+          {loading && Array.from({ length: PER_PAGE }, (_, i) => (
+            <div className="news-card news-card--skeleton" key={`skeleton-${i}`} aria-hidden="true">
+              <div className="news-card-meta">
+                <span className="news-skeleton-line news-skeleton-line--tag" />
+                <span className="news-skeleton-line news-skeleton-line--tag" />
+              </div>
+              <div className="news-skeleton-line news-skeleton-line--title" />
+              <div className="news-skeleton-line news-skeleton-line--title short" />
+              <div className="news-skeleton-line news-skeleton-line--source" />
+            </div>
+          ))}
           {paginated.map((item, i) => (
             <a
               key={i}

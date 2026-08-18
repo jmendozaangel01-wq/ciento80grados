@@ -36,8 +36,14 @@ export default function About() {
           {/* ── Visual ── */}
           <div className="about-visual reveal">
             <div className="about-photo-frame">
-              {/* Reemplaza el div de abajo con: <img src="/tu-foto.jpg" alt="Jairo Mendoza" /> */}
-              <img src={fotoJairo} alt="Jairo Mendoza" />
+              <img
+                src={fotoJairo}
+                alt="Jairo Mendoza"
+                width="960"
+                height="1280"
+                loading="lazy"
+                decoding="async"
+              />
               <div className="hero-badge">
                 <div className="hero-badge-status">&#9679; Disponible</div>
                

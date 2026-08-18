@@ -5,6 +5,24 @@
    180 GRADOS — Design System
    ============================================================ */
 
+/* ── Metric-compatible font fallbacks (CLS) ───────────────── */
+@font-face {
+  font-family: 'Syne Fallback';
+  src: local('Arial'), local('Helvetica'), local('Liberation Sans');
+  size-adjust: 96.41%;
+  ascent-override: 95.95%;
+  descent-override: 28.52%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'DM Sans Fallback';
+  src: local('Arial'), local('Helvetica'), local('Liberation Sans');
+  size-adjust: 97.18%;
+  ascent-override: 102.08%;
+  descent-override: 31.90%;
+  line-gap-override: 0%;
+}
+
 :root {
   --bg:           #0a0a0a;
   --bg-card:      #111111;
@@ -17,8 +35,8 @@
   --border:       #222222;
   --border-sub:   #181818;
 
-  --font-display: 'Syne', sans-serif;
-  --font-body:    'DM Sans', sans-serif;
+  --font-display: 'Syne', 'Syne Fallback', sans-serif;
+  --font-body:    'DM Sans', 'DM Sans Fallback', sans-serif;
   --font-mono:    'JetBrains Mono', 'Courier New', monospace;
 
   --nav-h:        72px;
@@ -456,16 +474,24 @@ section { padding: var(--pad-section) 0; }
 }
 
 /* Hero text entrance animations */
-.hero-label    { animation: heroFade 0.7s var(--ease-expo) 0.1s both; }
-.hero-headline { animation: heroFade 0.8s var(--ease-expo) 0.2s both; }
-.hero-sub      { animation: heroFade 0.7s var(--ease-expo) 0.4s both; }
-.hero-actions  { animation: heroFade 0.7s var(--ease-expo) 0.55s both; }
-.hero-metrics  { animation: heroFade 0.7s var(--ease-expo) 0.7s both; }
-.hero-visual   { animation: heroFade 0.9s var(--ease-expo) 0.25s both; }
+.hero-label    { animation: heroFade 0.4s var(--ease-expo) 0s both; }
+/* No delay and no opacity ramp on the LCP element: heroRise only moves it. */
+.hero-headline { animation: heroRise 0.5s var(--ease-expo) 0s both; }
+.hero-sub      { animation: heroFade 0.5s var(--ease-expo) 0.15s both; }
+.hero-actions  { animation: heroFade 0.5s var(--ease-expo) 0.25s both; }
+.hero-metrics  { animation: heroFade 0.5s var(--ease-expo) 0.35s both; }
+.hero-visual   { animation: heroFade 0.6s var(--ease-expo) 0.15s both; }
 
 @keyframes heroFade {
   from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Transform-only entrance: stays fully opaque so it counts as painted for LCP,
+   and transforms never trigger layout shift, so it costs no CLS either. */
+@keyframes heroRise {
+  from { transform: translateY(20px); }
+  to   { transform: translateY(0); }
 }
 
 .hero-ticker-wrap {
@@ -510,6 +536,33 @@ section { padding: var(--pad-section) 0; }
   white-space: pre-line;
   margin-bottom: 28px;
   color: var(--text);
+  position: relative;
+}
+/* Invisible copy of the final headline: it alone defines the block height. */
+.hero-headline-ghost {
+  display: block;
+  visibility: hidden;
+}
+/* Animating copy, lifted out of flow so re-wrapping costs no layout shift. */
+.hero-headline-live {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  white-space: pre;
+}
+/* Each cell is sized by the settled character, so the scrambling headline
+   always occupies exactly the final text's box. */
+.hero-char {
+  position: relative;
+  display: inline-block;
+}
+.hero-char-slot { visibility: hidden; }
+.hero-char-live {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
 }
 .cursor-blink {
   display: inline-block;
@@ -1144,6 +1197,29 @@ section { padding: var(--pad-section) 0; }
 }
 .news-source { font-size: 0.72rem; color: var(--muted); }
 .news-status { color: var(--muted); font-size: 0.85rem; margin: 24px 0; }
+
+/* Loading placeholders keep the grid at its final height (no layout shift). */
+.news-card--skeleton { pointer-events: none; }
+.news-skeleton-line {
+  display: block;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #1a1a1a 25%, #232323 50%, #1a1a1a 75%);
+  background-size: 200% 100%;
+  animation: newsSkeleton 1.4s ease-in-out infinite;
+}
+.news-skeleton-line--tag    { width: 56px;  height: 8px; }
+.news-skeleton-line--title  { width: 100%;  height: 13px; margin-bottom: 8px; }
+.news-skeleton-line--title.short { width: 65%; margin-bottom: 10px; }
+.news-skeleton-line--source { width: 72px;  height: 11px; }
+
+@keyframes newsSkeleton {
+  from { background-position: 200% 0; }
+  to   { background-position: -200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .news-skeleton-line { animation: none; }
+}
 .news-pagination {
   display: flex;
   flex-wrap: wrap;
@@ -1374,9 +1450,12 @@ section { padding: var(--pad-section) 0; }
 
 .yt-suggestions-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr;
   gap: 20px;
   max-width: 560px;
+}
+@media (min-width: 769px) {
+  .yt-suggestions-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 /* Thumb card */

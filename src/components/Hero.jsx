@@ -10,8 +10,15 @@ function scramble(text) {
 
 const SCRAMBLE_PLAYED_KEY = 'hero_scramble_played'
 
-function useScramble(text, delay = 250) {
-  const alreadyPlayed = localStorage.getItem(SCRAMBLE_PLAYED_KEY) === 'true'
+function prefersReducedMotion() {
+  return typeof window !== 'undefined'
+    && window.matchMedia
+    && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+}
+
+function useScramble(text, delay = 120) {
+  const alreadyPlayed =
+    localStorage.getItem(SCRAMBLE_PLAYED_KEY) === 'true' || prefersReducedMotion()
   const [display, setDisplay] = useState(() => alreadyPlayed ? text : scramble(text))
 
   useEffect(() => {
@@ -19,7 +26,7 @@ function useScramble(text, delay = 250) {
 
     const t = setTimeout(() => {
       let frame = 0
-      const total = 55
+      const total = 28
 
       const tick = () => {
         frame++
@@ -80,12 +87,35 @@ function Counter({ end, suffix = '', duration = 1800 }) {
   )
 }
 
+// While scrambling, every glyph is rendered in a fixed-width cell. The random
+// glyphs are wider than the real letters, so without this the headline width
+// changed on every frame and dragged the trailing caret with it.
+const NEWLINE = String.fromCharCode(10)
+const NBSP = String.fromCharCode(160)
+
+function ScrambleText({ text, value }) {
+  if (value === text) return value
+  // Each cell is sized by the *final* character (rendered invisibly) while the
+  // random glyph is overlaid on top. The animating headline therefore occupies
+  // exactly the same box as the settled one, so it cannot shift layout.
+  return text.split("").map((real, i) => {
+    if (real === NEWLINE) return <br key={i} />
+    const ch = value[i]
+    return (
+      <span className="hero-char" key={i}>
+        <span className="hero-char-slot">{real === " " ? NBSP : real}</span>
+        <span className="hero-char-live">{ch === " " ? NBSP : ch}</span>
+      </span>
+    )
+  })
+}
+
 const HEADLINE = 'Construyamos\nalgo '
 const ACCENT  = 'juntos.'
 
 export default function Hero() {
   const headline = useScramble(HEADLINE)
-  const accent   = useScramble(ACCENT, 350)
+  const accent   = useScramble(ACCENT, 200)
 
   return (
     <section className="hero" id="inicio">
@@ -104,8 +134,16 @@ export default function Hero() {
           </div>
 
           <h1 className="hero-headline">
-            {headline}<br className="hero-br" /><span className="green">{accent}</span>
-            <span className="cursor-blink" />
+            {/* Reserves the final height so the scramble cannot shift layout. */}
+            <span className="hero-headline-ghost" aria-hidden="true">
+              {HEADLINE}<br className="hero-br" />{ACCENT}
+            </span>
+            <span className="hero-headline-live">
+              <ScrambleText text={HEADLINE} value={headline} />
+              <br className="hero-br" />
+              <span className="green"><ScrambleText text={ACCENT} value={accent} /></span>
+              <span className="cursor-blink" />
+            </span>
           </h1>
 
           <p className="hero-sub">

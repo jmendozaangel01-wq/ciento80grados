@@ -3,33 +3,121 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Jairo Mendoza — The Builder</title>
     <meta name="description" content="Desarrollo web, automatizacion con n8n y e-commerce Shopify. Construyo cosas que importan." />
+    <link rel="canonical" href="https://ciento80grados.com/" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="theme-color" content="#0a0a0a" />
+
+    <!-- Open Graph / social -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="180 Grados" />
+    <meta property="og:title" content="Jairo Mendoza — The Builder" />
+    <meta property="og:description" content="Desarrollo web, automatizacion con n8n y e-commerce Shopify. Construyo cosas que importan." />
+    <meta property="og:url" content="https://ciento80grados.com/" />
+    <meta property="og:locale" content="es_CO" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Jairo Mendoza — The Builder" />
+    <meta name="twitter:description" content="Desarrollo web, automatizacion con n8n y e-commerce Shopify. Construyo cosas que importan." />
+
+    <!-- Fonts: italic axis dropped (unused), stylesheet loaded non-render-blocking -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=JetBrains+Mono:wght@300;400;500&display=swap"
-      rel="stylesheet"
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=JetBrains+Mono:wght@300;400;500&display=swap"
+      onload="this.onload=null;this.rel='stylesheet'"
     />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=JetBrains+Mono:wght@300;400;500&display=swap"
+      />
+    </noscript>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ProfessionalService",
+        "name": "180 Grados",
+        "url": "https://ciento80grados.com/",
+        "description": "Desarrollo web, automatizacion con n8n y e-commerce Shopify.",
+        "areaServed": "CO",
+        "founder": {
+          "@type": "Person",
+          "name": "Jairo Mendoza",
+          "jobTitle": "Ingeniero Industrial / Desarrollador"
+        },
+        "knowsAbout": [
+          "Desarrollo web",
+          "Automatizacion n8n",
+          "Shopify",
+          "React"
+        ]
+      }
+    </script>
   </head>
+
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+
+    <!--
+      Chatwoot live chat. Deferred until the page is idle or the visitor
+      interacts, so it no longer competes for bandwidth with the LCP paint.
+      The init call itself is unchanged.
+    -->
     <script>
-      (function(d,t) {
-        var BASE_URL="https://chat.ciento80grados.com";
-        var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
-        g.src=BASE_URL+"/packs/js/sdk.js";
-        g.defer = true;
-        g.async = true;
-        s.parentNode.insertBefore(g,s);
-        g.onload=function(){
-          window.chatwootSDK.run({
-            websiteToken: '7p3v1kFy6NvqArwFiWP3x9e7',
-            baseUrl: BASE_URL
-          })
+      (function () {
+        var loaded = false;
+
+        function loadWidgets() {
+          if (loaded) return;
+          loaded = true;
+          teardown();
+
+          var BASE_URL = 'https://chat.ciento80grados.com';
+          var chatwoot = document.createElement('script');
+          chatwoot.src = BASE_URL + '/packs/js/sdk.js';
+          chatwoot.async = true;
+          chatwoot.onload = function () {
+            window.chatwootSDK.run({
+              websiteToken: '7p3v1kFy6NvqArwFiWP3x9e7',
+              baseUrl: BASE_URL,
+            });
+          };
+          document.body.appendChild(chatwoot);
         }
-      })(document,"script");
+
+        var EVENTS = ['pointerdown', 'keydown', 'touchstart', 'scroll'];
+
+        function teardown() {
+          EVENTS.forEach(function (e) {
+            window.removeEventListener(e, loadWidgets, { passive: true });
+          });
+        }
+
+        EVENTS.forEach(function (e) {
+          window.addEventListener(e, loadWidgets, { passive: true, once: true });
+        });
+
+        // Fallback: load on idle so the chat still appears without interaction.
+        function scheduleIdleLoad() {
+          if ('requestIdleCallback' in window) {
+            requestIdleCallback(loadWidgets, { timeout: 4000 });
+          } else {
+            setTimeout(loadWidgets, 3000);
+          }
+        }
+
+        if (document.readyState === 'complete') {
+          scheduleIdleLoad();
+        } else {
+          window.addEventListener('load', scheduleIdleLoad, { once: true });
+        }
+      })();
     </script>
   </body>
 </html>
