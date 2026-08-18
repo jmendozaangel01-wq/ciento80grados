@@ -499,10 +499,19 @@ section { padding: var(--pad-section) 0; }
 
 .hero-ticker-wrap {
   overflow: hidden;
-  margin-bottom: 28px;
+  /* Now sits below the CTAs, so the breathing room goes above it. */
+  margin-top: 24px;
+  width: 100%;
   mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
   -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
-  animation: heroFade 0.7s var(--ease-expo) 0.1s both;
+  /* Enters last in the hero cascade, since it now renders after the buttons. */
+  animation: heroFade 0.7s var(--ease-expo) 0.35s both;
+}
+/* Hold the marquee while the pointer rests on it so the labels are readable.
+   :active covers touch, where there is no hover state. */
+.hero-ticker-wrap:hover .hero-ticker-track,
+.hero-ticker-wrap:active .hero-ticker-track {
+  animation-play-state: paused;
 }
 .hero-ticker-track {
   display: inline-flex;
@@ -512,7 +521,7 @@ section { padding: var(--pad-section) 0; }
 }
 .hero-ticker-item {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--muted);
@@ -1362,7 +1371,7 @@ section { padding: var(--pad-section) 0; }
     align-items: flex-start;
     padding-top: calc(var(--nav-h) + 20px);
   }
-  .hero-ticker-wrap { margin-bottom: 18px; }
+  .hero-ticker-wrap { margin-top: 16px; }
   .hero-inner { margin-left: 0; width: 100%; }
   .hero-headline { font-size: clamp(2.2rem, 8vw, 3rem); }
   .hero-br { display: block; }

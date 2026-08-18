@@ -122,16 +122,6 @@ export default function Hero() {
       <div className="container">
         <div className="hero-inner">
 
-          <div className="hero-ticker-wrap">
-            <div className="hero-ticker-track">
-              {['EMPRENDEDOR', 'Amante a la tecnología', 'Apasionado por el arte', 'Desarrollador web', 'Automatizador n8n', 'Shopify Partner'].map((t, i) => (
-                <span key={i} className="hero-ticker-item">{t} <span className="hero-ticker-sep">·</span></span>
-              ))}
-              {['EMPRENDEDOR', 'Amante a la tecnología', 'Apasionado por el arte', 'Desarrollador web', 'Automatizador n8n', 'Shopify Partner'].map((t, i) => (
-                <span key={`b${i}`} className="hero-ticker-item">{t} <span className="hero-ticker-sep">·</span></span>
-              ))}
-            </div>
-          </div>
 
           <h1 className="hero-headline">
             {/* Reserves the final height so the scramble cannot shift layout. */}
@@ -155,8 +145,19 @@ export default function Hero() {
             <a href="#sobre-mi" className="btn-ghost">Quién soy</a>
           </div>
 
-          
 
+          
+        </div>
+
+        <div className="hero-ticker-wrap">
+          <div className="hero-ticker-track">
+            {['EMPRENDEDOR', 'Amante a la tecnología', 'Apasionado por el arte', 'Desarrollador web', 'Automatizador n8n', 'Shopify Partner'].map((t, i) => (
+              <span key={i} className="hero-ticker-item">{t} <span className="hero-ticker-sep">·</span></span>
+            ))}
+            {['EMPRENDEDOR', 'Amante a la tecnología', 'Apasionado por el arte', 'Desarrollador web', 'Automatizador n8n', 'Shopify Partner'].map((t, i) => (
+              <span key={`b${i}`} className="hero-ticker-item">{t} <span className="hero-ticker-sep">·</span></span>
+            ))}
+          </div>
         </div>
       </div>
     </section>
