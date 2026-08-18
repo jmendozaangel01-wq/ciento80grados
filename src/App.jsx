@@ -8,6 +8,7 @@ import Portfolio from './components/Portfolio'
 import YouTube from './components/YouTube'
 import NewsFeed from './components/NewsFeed'
 import Contact from './components/Contact'
+import ConsentBanner from './components/ConsentBanner'
 
 const InstagramPage  = lazy(() => import('./pages/InstagramPage'))
 const RenovarAI      = lazy(() => import('./pages/RenovarAI'))
@@ -76,6 +77,8 @@ export default function App() {
           <Route path="/senalia" element={<SeñalIA />} />
         </Routes>
       </Suspense>
+      {/* Rendered outside Routes so it shows on every page. */}
+      <ConsentBanner />
     </>
   )
 }

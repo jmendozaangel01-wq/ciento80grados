@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import './index.css'
 import App from './App.jsx'
+import { initAnalytics } from './lib/measurement'
 
 const loadTime = Date.now()
 window.__APP_LOAD_TIME = loadTime
@@ -20,6 +21,9 @@ document.addEventListener('visibilitychange', () => {
     }
   }
 })
+
+// Consent Mode defaults have to reach dataLayer before anything renders.
+initAnalytics()
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

@@ -1563,3 +1563,122 @@ section { padding: var(--pad-section) 0; }
 .prob-bar {
   animation: fillBar 1.2s ease-out forwards;
 }
+
+/* ── Cookie consent ───────────────────────────────────────── */
+.c80-consent {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* Above the page vignette (9000) so the card is not dimmed by it, below the
+     mobile menu (9999) so it can never cover navigation. */
+  z-index: 9500;
+  padding: 20px;
+  animation: consentRise 0.45s var(--ease-expo) both;
+}
+@keyframes consentRise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.c80-consent-card {
+  max-width: 720px;
+  margin: 0 auto;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 24px 26px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+}
+.c80-consent-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 12px;
+}
+.c80-consent-text {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+.c80-consent-text strong { color: var(--text); font-weight: 500; }
+
+.c80-consent-options {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border-sub);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.c80-consent-option {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  cursor: pointer;
+}
+.c80-consent-option-copy { display: flex; flex-direction: column; gap: 3px; }
+.c80-consent-option-name {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text);
+}
+.c80-consent-option-desc {
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+.c80-consent-check {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  margin-top: 3px;
+  accent-color: var(--green);
+  cursor: pointer;
+}
+.c80-consent-check:disabled { cursor: not-allowed; opacity: 0.5; }
+
+.c80-consent-actions {
+  margin-top: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.c80-consent-toggle {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s ease;
+}
+.c80-consent-toggle:hover { color: var(--text); }
+
+.c80-consent-buttons { display: flex; gap: 10px; }
+.c80-consent-btn { padding: 11px 22px; font-size: 0.8rem; }
+
+@media (max-width: 768px) {
+  /* Extra bottom room so the Chatwoot bubble does not sit on the buttons. */
+  .c80-consent { padding: 16px 16px 96px; }
+  .c80-consent-card { padding: 20px; }
+  .c80-consent-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+  .c80-consent-toggle { align-self: flex-start; }
+  .c80-consent-buttons { flex-direction: column-reverse; }
+  .c80-consent-btn { width: 100%; justify-content: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .c80-consent { animation: none; }
+}
