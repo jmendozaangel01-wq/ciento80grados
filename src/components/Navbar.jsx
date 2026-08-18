@@ -1,11 +1,13 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
+// Entries with `to` are real routes and render a router Link. Entries with
+// `href` are anchors into the home page, prefixed with / when we are elsewhere.
 const homeLinks = [
   { label: 'Servicios', href: '#servicios' },
-  { label: 'Portfolio',  href: '#portfolio'  },
-  { label: 'Noticias',   href: '#noticias'   },
-  { label: 'Contacto',  href: '#contacto'   },
+  { label: 'Portfolio', to:   '/portfolio' },
+  { label: 'Noticias',  href: '#noticias'  },
+  { label: 'Contacto',  href: '#contacto'  },
 ]
 
 export default function Navbar() {
@@ -62,10 +64,12 @@ export default function Navbar() {
             {/* desktop links */}
             <ul className="nav-links">
               {homeLinks.map((l) => (
-                <li key={l.href}>
-                  {isHome
-                    ? <a href={l.href}>{l.label}</a>
-                    : <a href={`/${l.href}`}>{l.label}</a>
+                <li key={l.to || l.href}>
+                  {l.to
+                    ? <Link to={l.to}>{l.label}</Link>
+                    : isHome
+                      ? <a href={l.href}>{l.label}</a>
+                      : <a href={`/${l.href}`}>{l.label}</a>
                   }
                 </li>
               ))}
@@ -139,10 +143,12 @@ export default function Navbar() {
       <div className={`mobile-menu${menuOpen ? ' mobile-menu--open' : ''}`}>
         <ul className="mobile-menu-links">
           {homeLinks.map((l) => (
-            <li key={l.href}>
-              {isHome
-                ? <a href={l.href} onClick={handleAnchorClick}>{l.label}</a>
-                : <a href={`/${l.href}`} onClick={handleAnchorClick}>{l.label}</a>
+            <li key={l.to || l.href}>
+              {l.to
+                ? <Link to={l.to} onClick={handleAnchorClick}>{l.label}</Link>
+                : isHome
+                  ? <a href={l.href} onClick={handleAnchorClick}>{l.label}</a>
+                  : <a href={`/${l.href}`} onClick={handleAnchorClick}>{l.label}</a>
               }
             </li>
           ))}

@@ -9,12 +9,16 @@ import YouTube from './components/YouTube'
 import NewsFeed from './components/NewsFeed'
 import Contact from './components/Contact'
 import ConsentBanner from './components/ConsentBanner'
+import SiteFooter from './components/SiteFooter'
+import ScrollToTop from './components/ScrollToTop'
 
 const InstagramPage  = lazy(() => import('./pages/InstagramPage'))
 const RenovarAI      = lazy(() => import('./pages/RenovarAI'))
 const GuiaHero       = lazy(() => import('./pages/GuiaHero'))
 const NikeDashboard  = lazy(() => import('./pages/NikeDashboard'))
 const SeñalIA        = lazy(() => import('./pages/Senalia'))
+const PortfolioIndex = lazy(() => import('./pages/PortfolioIndex'))
+const ProjectDetail  = lazy(() => import('./pages/ProjectDetail'))
 
 function Home() {
   useEffect(() => {
@@ -44,21 +48,7 @@ function Home() {
         <YouTube />
         <Contact />
       </main>
-      <footer className="footer">
-        <div className="container">
-          <div className="footer-inner">
-            <div className="footer-copy">
-              &copy; 2026 creado por 180°
-            </div>
-            <div className="footer-right">
-              <a href="#servicios" className="footer-link">Servicios</a>
-              <a href="#portfolio" className="footer-link">Portfolio</a>
-              <a href="#noticias" className="footer-link">Noticias</a>
-              <a href="#contacto" className="footer-link">Contacto</a>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </>
   )
 }
@@ -67,9 +57,12 @@ export default function App() {
   return (
     <>
       <Navbar />
+      <ScrollToTop />
       <Suspense fallback={null}>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/portfolio" element={<PortfolioIndex />} />
+          <Route path="/portfolio/:slug" element={<ProjectDetail />} />
           <Route path="/instagram" element={<InstagramPage />} />
           <Route path="/renovar-ai" element={<RenovarAI />} />
           <Route path="/guia-hero" element={<GuiaHero />} />

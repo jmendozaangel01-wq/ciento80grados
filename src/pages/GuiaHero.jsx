@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import SiteFooter from '../components/SiteFooter'
 
 // ── Copy Button ────────────────────────────────────────────────────────────
 
@@ -800,18 +801,7 @@ El objetivo es que el video y el banner se sientan como una sola pieza visual os
       </div>
 
       {/* ── Footer ── */}
-      <footer className="footer">
-        <div className="container">
-          <div className="footer-inner">
-            <div className="footer-copy">&copy; 2026 creado por 180°</div>
-            <div className="footer-right">
-              <Link to="/#servicios" className="footer-link">Servicios</Link>
-              <Link to="/#portfolio" className="footer-link">Portfolio</Link>
-              <Link to="/#contacto" className="footer-link">Contacto</Link>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   )
 }

@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
+import SiteFooter from '../components/SiteFooter'
 import { createClient } from '@supabase/supabase-js'
 
 const supabase = createClient(
@@ -1048,18 +1049,7 @@ export default function RenovarAI() {
         </div>
       </div>
 
-      <footer className="footer">
-        <div className="container">
-          <div className="footer-inner">
-            <div className="footer-copy">&copy; 2026 creado por 180°</div>
-            <div className="footer-right">
-              <Link to="/#servicios" className="footer-link">Servicios</Link>
-              <Link to="/#portfolio" className="footer-link">Portfolio</Link>
-              <Link to="/#contacto" className="footer-link">Contacto</Link>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   )
 }
