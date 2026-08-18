@@ -9,6 +9,7 @@ import { writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, resolve } from 'node:path'
 import { PROJECTS } from '../src/data/projects.js'
+import { TOOLS, hasOwnPage } from '../src/data/tools.js'
 
 const ORIGIN = 'https://ciento80grados.com'
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
@@ -16,6 +17,7 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const STATIC_ROUTES = [
   { path: '/',            changefreq: 'weekly',  priority: '1.0' },
   { path: '/portfolio',   changefreq: 'weekly',  priority: '0.9' },
+  { path: '/herramientas', changefreq: 'weekly', priority: '0.9' },
   { path: '/renovar-ai',  changefreq: 'monthly', priority: '0.7' },
   { path: '/senalia',     changefreq: 'monthly', priority: '0.7' },
   { path: '/dashboard',   changefreq: 'monthly', priority: '0.6' },
@@ -27,6 +29,13 @@ const routes = [
   ...STATIC_ROUTES,
   ...PROJECTS.map(p => ({
     path: `/portfolio/${p.slug}`,
+    changefreq: 'monthly',
+    priority: '0.8',
+  })),
+  // Las entradas con página propia ya figuran arriba con su ruta real: no se
+  // les genera detalle, así que indexarlas duplicaría la misma página.
+  ...TOOLS.filter(t => !hasOwnPage(t)).map(t => ({
+    path: `/herramientas/${t.slug}`,
     changefreq: 'monthly',
     priority: '0.8',
   })),

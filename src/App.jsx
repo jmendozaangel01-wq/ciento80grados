@@ -19,6 +19,8 @@ const NikeDashboard  = lazy(() => import('./pages/NikeDashboard'))
 const SeñalIA        = lazy(() => import('./pages/Senalia'))
 const PortfolioIndex = lazy(() => import('./pages/PortfolioIndex'))
 const ProjectDetail  = lazy(() => import('./pages/ProjectDetail'))
+const ToolsIndex     = lazy(() => import('./pages/ToolsIndex'))
+const ToolDetail     = lazy(() => import('./pages/ToolDetail'))
 
 function Home() {
   useEffect(() => {
@@ -63,6 +65,8 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/portfolio" element={<PortfolioIndex />} />
           <Route path="/portfolio/:slug" element={<ProjectDetail />} />
+          <Route path="/herramientas" element={<ToolsIndex />} />
+          <Route path="/herramientas/:slug" element={<ToolDetail />} />
           <Route path="/instagram" element={<InstagramPage />} />
           <Route path="/renovar-ai" element={<RenovarAI />} />
           <Route path="/guia-hero" element={<GuiaHero />} />

@@ -2104,3 +2104,229 @@ section { padding: var(--pad-section) 0; }
   .pf-card:hover { transform: none; }
   .pf-card:hover .pf-cover-img { transform: none; }
 }
+
+/* ── Herramientas IA ──────────────────────────────────────── */
+.tool-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.tool-card {
+  display: flex;
+  flex-direction: column;
+  padding: 26px 24px 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  transition: transform 0.3s var(--ease-smooth), border-color 0.3s ease, background 0.3s ease;
+}
+.tool-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(0, 230, 118, 0.35);
+  background: var(--bg-card-alt);
+}
+
+.tool-card-kind {
+  display: inline-block;
+  align-self: flex-start;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  border-radius: 3px;
+  margin-bottom: 16px;
+}
+/* Un color por tipo, para distinguirlos de un vistazo en la grilla. */
+.tool-card-kind--herramienta { color: var(--green); background: rgba(0, 230, 118, 0.1);  border: 1px solid rgba(0, 230, 118, 0.25); }
+.tool-card-kind--guia        { color: #6fb4ff;      background: rgba(111, 180, 255, 0.1); border: 1px solid rgba(111, 180, 255, 0.25); }
+.tool-card-kind--skill       { color: #d79bff;      background: rgba(215, 155, 255, 0.1); border: 1px solid rgba(215, 155, 255, 0.25); }
+
+.tool-card-title {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  margin-bottom: 10px;
+}
+.tool-card-desc {
+  flex: 1;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.65;
+  margin-bottom: 20px;
+}
+.tool-card-cta {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  transition: color 0.2s ease;
+}
+.tool-card:hover .tool-card-cta { color: var(--green); }
+
+/* ── Detalle de una herramienta ───────────────────────────── */
+.tool-page { max-width: 100%; }
+.tool-header {
+  max-width: 760px;
+  margin-bottom: 44px;
+  padding-bottom: 36px;
+  border-bottom: 1px solid var(--border-sub);
+}
+.tool-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.8vw, 3.1rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.06;
+  margin: 14px 0 18px;
+}
+.tool-lead {
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+.tool-download { margin-top: 26px; }
+
+.tool-body { max-width: 760px; }
+
+.tool-block { margin-bottom: 36px; }
+.tool-block-title {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 12px;
+}
+.tool-block-text {
+  color: #c9c9c9;
+  font-size: 1rem;
+  line-height: 1.8;
+}
+.tool-block-text--suelto { margin-bottom: 22px; }
+
+.tool-aviso {
+  margin-bottom: 36px;
+  padding: 22px 24px;
+  background: rgba(0, 230, 118, 0.05);
+  border: 1px solid rgba(0, 230, 118, 0.22);
+  border-left-width: 3px;
+  border-radius: 5px;
+}
+.tool-aviso-title {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 10px;
+}
+.tool-aviso-text {
+  color: #c9c9c9;
+  font-size: 0.95rem;
+  line-height: 1.75;
+}
+
+/* ── Bloque copiable ──────────────────────────────────────── */
+.tool-code {
+  margin-top: 16px;
+  background: #0d0d0d;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.tool-code-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 12px 9px 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid var(--border);
+}
+.tool-code-lang {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+/* El prompt es largo: se limita la altura y se scrollea dentro del bloque,
+   así la página sigue siendo navegable y el botón de copiar queda cerca. */
+.tool-code-body {
+  max-height: 420px;
+  overflow: auto;
+  padding: 18px 16px;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.75;
+  color: #d7d7d7;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  padding: 6px 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+}
+.copy-btn:hover { color: var(--text); border-color: rgba(255, 255, 255, 0.22); }
+.copy-btn--copied {
+  color: var(--green);
+  background: rgba(0, 230, 118, 0.14);
+  border-color: rgba(0, 230, 118, 0.4);
+}
+.copy-btn--error {
+  color: #ff8a8a;
+  background: rgba(255, 90, 90, 0.12);
+  border-color: rgba(255, 90, 90, 0.35);
+}
+.copy-btn:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+
+/* ── Cierre ───────────────────────────────────────────────── */
+.tool-cierre {
+  max-width: 760px;
+  margin-top: 56px;
+  padding-top: 36px;
+  border-top: 1px solid var(--border-sub);
+}
+.tool-cierre-text {
+  color: var(--muted);
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
+.tool-cierre-links {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+@media (max-width: 980px) {
+  .tool-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+  .tool-grid { grid-template-columns: 1fr; }
+  .tool-code-body { font-size: 11.5px; max-height: 340px; }
+  .tool-cierre-links { flex-direction: column; align-items: flex-start; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tool-card { transition: none; }
+  .tool-card:hover { transform: none; }
+}

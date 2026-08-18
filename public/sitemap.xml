@@ -11,6 +11,11 @@
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://ciento80grados.com/herramientas</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://ciento80grados.com/renovar-ai</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -102,6 +107,11 @@
   </url>
   <url>
     <loc>https://ciento80grados.com/portfolio/comparador-precios</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ciento80grados.com/herramientas/seo-performance-con-ia</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

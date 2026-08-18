@@ -100,7 +100,7 @@ export default function PortfolioIndex() {
               Ver servicios y tarifas
             </a>
             <Link to="/#contacto" className="pf-page-foot-link">
-              &iquest;Tenés un proyecto en mente? Hablemos &rarr;
+              &iquest;Tienes un proyecto en mente? Hablemos &rarr;
             </Link>
           </div>
 
