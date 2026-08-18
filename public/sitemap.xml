@@ -51,6 +51,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://ciento80grados.com/portfolio/senal-ia</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://ciento80grados.com/portfolio/crc-clinica</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
