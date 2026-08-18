@@ -1,6 +1,6 @@
 import { useParams, Link } from 'react-router-dom'
 import { PROJECTS, getProject, isExternal } from '../data/projects'
-import ProjectCover from '../components/ProjectCover'
+import ProjectGallery from '../components/ProjectGallery'
 import SiteFooter from '../components/SiteFooter'
 import useDocumentMeta from '../lib/useDocumentMeta'
 
@@ -58,7 +58,7 @@ export default function ProjectDetail() {
 
           <Link to="/portfolio" className="pf-back">&larr; Volver al portfolio</Link>
 
-          <ProjectCover project={project} eager className="pf-detail-cover" />
+          <ProjectGallery project={project} />
 
           <div className="pf-detail-layout">
 
@@ -85,19 +85,9 @@ export default function ProjectDetail() {
                 </section>
               )}
 
-              {project.gallery.length > 0 && (
-                <section className="pf-gallery">
-                  {project.gallery.map((src, i) => (
-                    <img
-                      key={src}
-                      src={src}
-                      alt={`${project.title}, imagen ${i + 1}`}
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  ))}
-                </section>
-              )}
+              {/* The gallery images are not stacked here any more. They are
+                  paged through in the viewer at the top of the page, so
+                  repeating them would show the same photos twice. */}
             </div>
 
             <aside className="pf-detail-aside">

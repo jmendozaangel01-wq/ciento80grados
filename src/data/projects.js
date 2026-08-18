@@ -19,7 +19,9 @@
  * cover     Optional path under /public, such as /portfolio/crc-clinica.jpg.
  *           Leave empty and the card renders a generated placeholder instead,
  *           so the grid stays presentable before screenshots exist.
- * gallery   Optional extra images for the detail page. Same rules as cover.
+ * gallery   Extra photos, same path rules as cover. On the detail page the
+ *           viewer pages through [cover, ...gallery] in this order, so the
+ *           arrows only appear once a project has two images or more.
  * link      Live project. External URLs start with http, anything else is
  *           treated as an internal route. Leave empty when nothing is public.
  */

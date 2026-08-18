@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 /**
  * Cover image for a project, with a generated stand-in when no screenshot
@@ -8,16 +8,21 @@ import { useState } from 'react'
  * The fallback also covers a `cover` path that 404s, so a typo or a deleted
  * file degrades to the placeholder instead of a broken image icon.
  */
-export default function ProjectCover({ project, eager = false, className = '' }) {
+export default function ProjectCover({ project, src, alt, eager = false, className = '' }) {
   const [failed, setFailed] = useState(false)
-  const showImage = Boolean(project.cover) && !failed
+  const source = src ?? project.cover
+  const showImage = Boolean(source) && !failed
+
+  // Without this, one broken image in a gallery would keep the fallback
+  // showing for every later image the viewer pages to.
+  useEffect(() => { setFailed(false) }, [source])
 
   return (
     <div className={`pf-cover ${className}`.trim()}>
       {showImage ? (
         <img
-          src={project.cover}
-          alt={`Captura del proyecto ${project.title}`}
+          src={source}
+          alt={alt ?? `Captura del proyecto ${project.title}`}
           className="pf-cover-img"
           loading={eager ? 'eager' : 'lazy'}
           decoding="async"
