@@ -215,6 +215,12 @@ section { padding: var(--pad-section) 0; }
   backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border);
 }
+/* .navbar-inner uses height:100%, which only resolves if every ancestor up to
+   the fixed .navbar has a resolved height. Without this the row collapsed to
+   its content (~38px) and sat flush against the top of the 72px bar, so
+   align-items:center had no extra space to distribute. */
+.navbar > .container { height: 100%; }
+
 .navbar-inner {
   height: 100%;
   display: flex;
@@ -234,6 +240,13 @@ section { padding: var(--pad-section) 0; }
   align-items: center;
   gap: 40px;
   list-style: none;
+}
+/* The anchors are inline, so their boxes align to the li line box baseline
+   (16px strut) instead of its center, leaving them ~1px below the flex
+   dropdown trigger. Making each li a flex box centers both the same way. */
+.nav-links li {
+  display: flex;
+  align-items: center;
 }
 .nav-links a {
   font-size: 0.8rem;
