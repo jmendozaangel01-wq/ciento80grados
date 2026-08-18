@@ -1351,6 +1351,15 @@ section { padding: var(--pad-section) 0; }
   .mobile-menu { display: flex; }
 
   /* Hero */
+  /* No full-height centering on phones: the hero is text-only, so centering it
+     in 100vh left a large dead gap between the navbar and the ticker. Anchor it
+     under the navbar instead and let the height follow the content. */
+  .hero {
+    min-height: auto;
+    align-items: flex-start;
+    padding-top: calc(var(--nav-h) + 20px);
+  }
+  .hero-ticker-wrap { margin-bottom: 18px; }
   .hero-inner { margin-left: 0; width: 100%; }
   .hero-headline { font-size: clamp(2.2rem, 8vw, 3rem); }
   .hero-br { display: block; }
