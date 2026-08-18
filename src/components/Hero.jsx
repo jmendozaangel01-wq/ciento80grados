@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
+import { SOCIAL_NAV } from '../data/social'
+import SocialIcon from './SocialIcon'
 
 const CHARS = '!<>-_\\/[]{}=+*^?#@$%&~'
 
@@ -139,6 +141,24 @@ export default function Hero() {
           <p className="hero-sub">
             Desarrollo web enfocado en resultados, flujos n8n que eliminan trabajo manual, y tiendas Shopify optimizadas para crecer sin rodeos, sin demoras.
           </p>
+
+          {/* Alto fijo por CSS: el hero es el elemento LCP y cualquier bloque
+              que crezca después de pintar vuelve a mover el CLS. */}
+          <div className="hero-social">
+            {SOCIAL_NAV.map(red => (
+              <a
+                key={red.key}
+                href={red.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hero-social-link"
+                aria-label={`${red.label} de 180 Grados`}
+                title={`${red.label} · ${red.handle}`}
+              >
+                <SocialIcon name={red.key} size={19} />
+              </a>
+            ))}
+          </div>
 
           <div className="hero-actions">
             <a href="#portfolio" className="btn-primary">Ver proyectos &rarr;</a>

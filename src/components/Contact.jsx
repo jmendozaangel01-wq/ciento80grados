@@ -1,3 +1,6 @@
+import { SOCIAL } from '../data/social'
+import SocialIcon from './SocialIcon'
+
 export default function Contact() {
   return (
     <section className="contact" id="contacto">
@@ -17,7 +20,7 @@ export default function Contact() {
 
           <div className="contact-channels">
             <a href="mailto:cientogrados@gmail.com" className="contact-channel">
-              <span className="contact-channel-icon">&#9993;</span>
+              <SocialIcon name="mail" />
               cientogrados@gmail.com
             </a>
             <a
@@ -26,18 +29,21 @@ export default function Contact() {
               rel="noopener noreferrer"
               className="contact-channel"
             >
-              <span className="contact-channel-icon">&#9711;</span>
+              <SocialIcon name="whatsapp" />
               WhatsApp directo
             </a>
-            <a
-              href="https://www.youtube.com/@cien80grados"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="contact-channel"
-            >
-              <span className="contact-channel-icon">&#9654;</span>
-              YouTube
-            </a>
+            {SOCIAL.map(red => (
+              <a
+                key={red.key}
+                href={red.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="contact-channel"
+              >
+                <SocialIcon name={red.key} />
+                {red.label}
+              </a>
+            ))}
           </div>
         </div>
       </div>

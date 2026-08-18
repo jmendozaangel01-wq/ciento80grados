@@ -1,5 +1,6 @@
 import { useParams, Link } from 'react-router-dom'
 import { getTool, hasOwnPage } from '../data/tools'
+import { SOCIAL } from '../data/social'
 import CopyButton from '../components/CopyButton'
 import SiteFooter from '../components/SiteFooter'
 import useDocumentMeta from '../lib/useDocumentMeta'
@@ -111,18 +112,22 @@ export default function ToolDetail() {
               Si esto te sirvió, subo una de estas por semana.
             </p>
             <div className="tool-cierre-links">
-              <a
-                href="https://www.tiktok.com/@jairothebuilder"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-primary"
-              >
-                Sígueme en TikTok
-              </a>
-              <Link to="/herramientas" className="pf-page-foot-link">
-                Ver el resto de las herramientas &rarr;
-              </Link>
+              {SOCIAL.map(red => (
+                <a
+                  key={red.key}
+                  href={red.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="tool-social"
+                >
+                  <span className="tool-social-red">{red.label}</span>
+                  <span className="tool-social-handle">{red.handle}</span>
+                </a>
+              ))}
             </div>
+            <Link to="/herramientas" className="pf-page-foot-link tool-cierre-volver">
+              Ver el resto de las herramientas &rarr;
+            </Link>
           </div>
 
         </div>
