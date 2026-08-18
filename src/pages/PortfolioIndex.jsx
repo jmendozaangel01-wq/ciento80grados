@@ -27,9 +27,18 @@ export default function PortfolioIndex() {
       .filter(c => c.count > 0)
   ), [])
 
-  const visible = useMemo(() => (
-    filter === 'todos' ? PROJECTS : PROJECTS.filter(p => p.category === filter)
-  ), [filter])
+  const visible = useMemo(() => {
+    const base = filter === 'todos'
+      ? PROJECTS
+      : PROJECTS.filter(p => p.category === filter)
+
+    // Los proyectos con captura van primero: una fila de placeholders al
+    // entrar da peor impresión que la misma grilla con las fotos arriba.
+    // Ordenar aquí en vez de reordenar el array a mano significa que un
+    // proyecto sube solo en cuanto se le agrega una imagen. Sort es estable,
+    // así que dentro de cada grupo se respeta el orden de projects.js.
+    return [...base].sort((a, b) => Number(Boolean(b.cover)) - Number(Boolean(a.cover)))
+  }, [filter])
 
   return (
     <>
