@@ -10,7 +10,7 @@ import NewsFeed from './components/NewsFeed'
 import Contact from './components/Contact'
 import ConsentBanner from './components/ConsentBanner'
 import SiteFooter from './components/SiteFooter'
-import ScrollToTop from './components/ScrollToTop'
+import RouteScroll from './components/RouteScroll'
 
 const InstagramPage  = lazy(() => import('./pages/InstagramPage'))
 const RenovarAI      = lazy(() => import('./pages/RenovarAI'))
@@ -57,7 +57,7 @@ export default function App() {
   return (
     <>
       <Navbar />
-      <ScrollToTop />
+      <RouteScroll />
       <Suspense fallback={null}>
         <Routes>
           <Route path="/" element={<Home />} />
