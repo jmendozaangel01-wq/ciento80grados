@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { Link } from 'react-router-dom'
 import { SOCIAL_NAV } from '../data/social'
 import SocialIcon from './SocialIcon'
 
@@ -161,7 +162,7 @@ export default function Hero() {
           </div>
 
           <div className="hero-actions">
-            <a href="#portfolio" className="btn-primary">Ver proyectos &rarr;</a>
+            <Link to="/portfolio" className="btn-primary">Ver proyectos &rarr;</Link>
             <a href="#sobre-mi" className="btn-ghost">Quién soy</a>
           </div>
 
